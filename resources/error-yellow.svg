@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" viewBox="0 0 1600 1600">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ffff31;
+      }
+
+      .cls-1, .cls-2 {
+        fill-rule: evenodd;
+      }
+
+      .cls-3 {
+        isolation: isolate;
+      }
+
+      .cls-4 {
+        display: none;
+        fill: #ff5f5f;
+      }
+    </style>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.7.1, SVG Export Plug-In . SVG Version: 1.2.0 Build 142)  -->
+  <g>
+    <g id="Layer_1">
+      <sodipodi:namedview pagecolor="#303030" showgrid="true">
+        <inkscape:grid id="grid5" color="#4772b3" opacity="0.2" spacingx="100" spacingy="100" units="px" visible="true"/>
+      </sodipodi:namedview>
+      <g class="cls-3">
+        <path class="cls-4" d="M-100,1700h1800V-100H-100v1800Z"/>
+        <path class="cls-2" d="M831.2,130c-69-.4-132.6,38.5-163.5,100.2L148.9,1267.3c-59.4,118.8,29.3,262.6,162.1,262.7h1037.9c132.7,0,221.3-143.8,162.1-262.5L992.3,230.2c-30.5-60.9-93-99.7-161.1-100.2Z"/>
+        <path class="cls-1" d="M801.2,100c-69-.4-132.6,38.5-163.5,100.2L118.9,1237.3c-59.4,118.8,29.3,262.6,162.1,262.7h1037.9c132.7,0,221.3-143.8,162.1-262.5L962.3,200.2c-30.5-60.9-93-99.7-161.1-100.2ZM700,400h200v600h-200V400ZM700,1100h200v200h-200v-200Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
