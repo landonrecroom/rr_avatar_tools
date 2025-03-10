@@ -13,9 +13,10 @@ from rr_avatar_tools.operators.base import RecRoomAvatarMeshOperator
 
 class RR_OT_TransferUVs(RecRoomAvatarMeshOperator):
     """UVs from active to selected"""
+
     bl_idname = 'rr.transfer_uvs_from_active_mesh'
     bl_label = 'UVs From Active Mesh'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -27,7 +28,11 @@ class RR_OT_TransferUVs(RecRoomAvatarMeshOperator):
     def execute(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH' and o != active]
+        selected_meshes = [
+            o
+            for o in bpy.data.objects
+            if o.select_get() and o.type == 'MESH' and o != active
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
@@ -39,9 +44,7 @@ class RR_OT_TransferUVs(RecRoomAvatarMeshOperator):
             active.select_set(True)
             bpy.context.view_layer.objects.active = active
 
-            bpy.ops.object.data_transfer(
-                data_type='UV'
-            )
+            bpy.ops.object.data_transfer(data_type='UV')
 
             selected.select_set(False)
 
@@ -51,19 +54,17 @@ class RR_OT_TransferUVs(RecRoomAvatarMeshOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
     """Mirror mesh geometry but keep UV layout"""
+
     bl_idname = 'rr.transfer_make_symmetric_keep_uvs'
     bl_label = 'Mirror Mesh Keep UVs'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    flip:BoolProperty(
-        name='Flip',
-        default=False
-    )
+    flip: BoolProperty(name='Flip', default=False)
 
     def execute(self, context):
         # Cache selection
@@ -95,9 +96,7 @@ class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
             bpy.context.view_layer.objects.active = duplicate
             selected.select_set(True)
 
-            bpy.ops.object.data_transfer(
-                data_type='UV'
-            )
+            bpy.ops.object.data_transfer(data_type='UV')
 
             selected.select_set(False)
 
@@ -110,7 +109,7 @@ class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 classes = (

@@ -23,15 +23,10 @@ class SCENE_PT_RRAvatarToolsSetupPanel(RecRoomAvatarPanel):
         # Ensure file is correctly set up
         operator = operators.setup.RR_OT_SetupSetupFile
 
-        column.operator(
-            operator.bl_idname,
-            text=operator.bl_label,
-            icon='FILE_TICK'
-        )
+        column.operator(operator.bl_idname, text=operator.bl_label, icon='FILE_TICK')
 
-classes = (
-    SCENE_PT_RRAvatarToolsSetupPanel,
-)
+
+classes = (SCENE_PT_RRAvatarToolsSetupPanel,)
 
 
 def register():

@@ -37,7 +37,7 @@ classes = sum(
         experimental.classes,
         outfits.classes,
     ),
-    ()
+    (),
 )
 
 modules = (

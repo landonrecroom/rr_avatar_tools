@@ -9,9 +9,10 @@ from rr_avatar_tools.utils import put_file_in_known_good_state
 
 class RR_OT_ExportGenericAvatarItems(RecRoomAvatarOperator):
     """Setup file for avatar work"""
+
     bl_idname = 'rr.export_generic_avatar_items'
     bl_label = 'Export Avatar Items'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     rr_require_source_art_path = False
     rr_require_source_art_path = False
@@ -21,7 +22,10 @@ class RR_OT_ExportGenericAvatarItems(RecRoomAvatarOperator):
     def poll(cls, context):
         prefs = bpy.context.preferences.addons['rr_avatar_tools'].preferences
 
-        any_item_selected = bpy.ops.rr.export_generic_full_body_avatar_items.poll() or bpy.ops.rr.export_generic_modern_bean_avatar_items.poll()
+        any_item_selected = (
+            bpy.ops.rr.export_generic_full_body_avatar_items.poll()
+            or bpy.ops.rr.export_generic_modern_bean_avatar_items.poll()
+        )
         export_path_set = bool(prefs.generic_export_path)
 
         return any_item_selected and export_path_set
@@ -37,18 +41,21 @@ class RR_OT_ExportGenericAvatarItems(RecRoomAvatarOperator):
         if bpy.ops.rr.export_generic_modern_bean_avatar_items.poll():
             bpy.ops.rr.export_generic_modern_bean_avatar_items()
 
-        count = len([p for p in bpy.context.scene.export_list if p.select and p.can_export()])
+        count = len(
+            [p for p in bpy.context.scene.export_list if p.select and p.can_export()]
+        )
 
         self.report({'INFO'}, f'Exported {count} item(s)')
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_ExportGenericFullBodyAvatarItems(RecRoomAvatarOperator):
     """Export selected"""
+
     bl_idname = 'rr.export_generic_full_body_avatar_items'
     bl_label = 'Export Full Body Avatar Items'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     rr_require_rec_room_path = False
     rr_required_mode = 'OBJECT'
@@ -60,20 +67,30 @@ class RR_OT_ExportGenericFullBodyAvatarItems(RecRoomAvatarOperator):
     @classmethod
     def export_groups(cls):
         collections = [c.get('rec_room_uuid') for c in cls.export_collections()]
-        return [i for i in bpy.context.scene.export_list if i.can_export() and i.uuid in collections] or []
+        return [
+            i
+            for i in bpy.context.scene.export_list
+            if i.can_export() and i.uuid in collections
+        ] or []
 
     @classmethod
     def export_collections(cls):
-        return [c for c in rr_avatar_tools.data.avatar_items if c.name.startswith('FB_')]
+        return [
+            c for c in rr_avatar_tools.data.avatar_items if c.name.startswith('FB_')
+        ]
 
     def layer_collections(self):
         def walk_view_layers(collection):
-            return sum([walk_view_layers(c) for c in collection.children], start=[collection])
+            return sum(
+                [walk_view_layers(c) for c in collection.children], start=[collection]
+            )
 
         return walk_view_layers(bpy.context.view_layer.layer_collection)
 
     def set_active_collection(self, collection):
-        collections = [c for c in self.layer_collections() if c.collection == collection]
+        collections = [
+            c for c in self.layer_collections() if c.collection == collection
+        ]
 
         if collections:
             bpy.context.view_layer.active_layer_collection = collections[0]
@@ -94,26 +111,21 @@ class RR_OT_ExportGenericFullBodyAvatarItems(RecRoomAvatarOperator):
             if not os.path.exists(basepath):
                 os.makedirs(basepath)
 
-            filepath = os.path.join(
-                basepath,
-                f'{collection.name}.fbx'
-            )
+            filepath = os.path.join(basepath, f'{collection.name}.fbx')
 
             export_fbx_bin.save(
-                self,
-                context,
-                filepath=filepath,
-                **settings.full_body_export_fbx
+                self, context, filepath=filepath, **settings.full_body_export_fbx
             )
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_ExportGenericModernBeanAvatarItems(RecRoomAvatarOperator):
     """Export selected"""
+
     bl_idname = 'rr.export_generic_modern_bean_avatar_items'
     bl_label = 'Export Modern Bean Avatar Items'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     rr_require_rec_room_path = False
     rr_required_mode = 'OBJECT'
@@ -125,20 +137,30 @@ class RR_OT_ExportGenericModernBeanAvatarItems(RecRoomAvatarOperator):
     @classmethod
     def export_groups(cls):
         collections = [c.get('rec_room_uuid') for c in cls.export_collections()]
-        return [i for i in bpy.context.scene.export_list if i.can_export() and i.uuid in collections] or []
+        return [
+            i
+            for i in bpy.context.scene.export_list
+            if i.can_export() and i.uuid in collections
+        ] or []
 
     @classmethod
     def export_collections(cls):
-        return [c for c in rr_avatar_tools.data.avatar_items if c.name.startswith('MB_')]
+        return [
+            c for c in rr_avatar_tools.data.avatar_items if c.name.startswith('MB_')
+        ]
 
     def layer_collections(self):
         def walk_view_layers(collection):
-            return sum([walk_view_layers(c) for c in collection.children], start=[collection])
+            return sum(
+                [walk_view_layers(c) for c in collection.children], start=[collection]
+            )
 
         return walk_view_layers(bpy.context.view_layer.layer_collection)
 
     def set_active_collection(self, collection):
-        collections = [c for c in self.layer_collections() if c.collection == collection]
+        collections = [
+            c for c in self.layer_collections() if c.collection == collection
+        ]
 
         if collections:
             bpy.context.view_layer.active_layer_collection = collections[0]
@@ -159,26 +181,21 @@ class RR_OT_ExportGenericModernBeanAvatarItems(RecRoomAvatarOperator):
             if not os.path.exists(basepath):
                 os.makedirs(basepath)
 
-            filepath = os.path.join(
-                basepath,
-                f'{collection.name}.fbx'
-            )
+            filepath = os.path.join(basepath, f'{collection.name}.fbx')
 
             export_fbx_bin.save(
-                self,
-                context,
-                filepath=filepath,
-                **settings.full_body_export_fbx
+                self, context, filepath=filepath, **settings.full_body_export_fbx
             )
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_ExportSelectAvatarItemMeshes(RecRoomAvatarOperator):
     """Select all meshes for given avatar item"""
+
     bl_idname = 'rr.export_select_avatar_item_meshes'
     bl_label = 'Select Avatar Item Meshes'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     rr_require_rec_room_path = False
     rr_required_mode = 'OBJECT'
@@ -194,19 +211,22 @@ class RR_OT_ExportSelectAvatarItemMeshes(RecRoomAvatarOperator):
 
         for mesh in [o for o in collection.objects if o.type == 'MESH']:
             # Set active if None
-            bpy.context.view_layer.objects.active = bpy.context.view_layer.objects.active or mesh
+            bpy.context.view_layer.objects.active = (
+                bpy.context.view_layer.objects.active or mesh
+            )
 
             # Select mesh object
             mesh.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_ExportDeleteAvatarItem(RecRoomAvatarOperator):
     """Delete Avatar Item"""
+
     bl_idname = 'rr.export_delete_avatar_item'
     bl_label = 'Delete Avatar Item'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     rr_require_rec_room_path = False
     rr_required_mode = 'OBJECT'
@@ -227,14 +247,15 @@ class RR_OT_ExportDeleteAvatarItem(RecRoomAvatarOperator):
 
         bpy.data.collections.remove(collection)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
     """Toggle visibility"""
+
     bl_idname = 'rr.export_toggle_avatar_item_visibility_by_lod'
     bl_label = 'Toggle Avatar Item Visibility'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     rr_require_rec_room_path = False
     rr_required_mode = 'OBJECT'
@@ -247,7 +268,7 @@ class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
             ('LOD1', 'LOD1', ''),
             ('LOD2', 'LOD2', ''),
         ],
-        default='ALL'
+        default='ALL',
     )
 
     @classmethod
@@ -257,7 +278,9 @@ class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
     def execute(self, context):
         # Avatar items
         for collection in rr_avatar_tools.data.avatar_items:
-            for object_ in [o for o in collection.objects if o.type == 'MESH' and 'LOD' in o.name]:
+            for object_ in [
+                o for o in collection.objects if o.type == 'MESH' and 'LOD' in o.name
+            ]:
                 if self.lod == 'ALL':
                     object_.hide_set(False)
                     continue
@@ -265,7 +288,11 @@ class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
                 object_.hide_set(not self.lod in object_.name)
 
         # Modern bean body meshes
-        for object_ in [o for o in rr_avatar_tools.data.collections['MB_Resources'].objects if o.type == 'MESH' and 'LOD' in o.name]:
+        for object_ in [
+            o
+            for o in rr_avatar_tools.data.collections['MB_Resources'].objects
+            if o.type == 'MESH' and 'LOD' in o.name
+        ]:
             if self.lod == 'ALL':
                 object_.hide_set(False)
                 continue
@@ -273,7 +300,11 @@ class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
             object_.hide_set(not self.lod in object_.name)
 
         # Full body meshes
-        for object_ in [o for o in rr_avatar_tools.data.collections['FB_Resources'].objects if o.type == 'MESH' and 'LOD' in o.name]:
+        for object_ in [
+            o
+            for o in rr_avatar_tools.data.collections['FB_Resources'].objects
+            if o.type == 'MESH' and 'LOD' in o.name
+        ]:
             if self.lod == 'ALL':
                 object_.hide_set(False)
                 continue
@@ -283,7 +314,11 @@ class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
         # FB Test outfits
         if fb_collection := rr_avatar_tools.data.collections.get('FB_TestOutfits'):
             for avatar_item in [o for o in fb_collection.children]:
-                for object_ in [o for o in avatar_item.objects if o.type == 'MESH' and 'LOD' in o.name]:
+                for object_ in [
+                    o
+                    for o in avatar_item.objects
+                    if o.type == 'MESH' and 'LOD' in o.name
+                ]:
                     if self.lod == 'ALL':
                         object_.hide_set(False)
                         continue
@@ -293,14 +328,18 @@ class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
         # MB Test outfits
         if mb_collection := rr_avatar_tools.data.collections.get('MB_TestOutfits'):
             for avatar_item in [o for o in mb_collection.children]:
-                for object_ in [o for o in avatar_item.objects if o.type == 'MESH' and 'LOD' in o.name]:
+                for object_ in [
+                    o
+                    for o in avatar_item.objects
+                    if o.type == 'MESH' and 'LOD' in o.name
+                ]:
                     if self.lod == 'ALL':
                         object_.hide_set(False)
                         continue
 
                     object_.hide_set(not self.lod in object_.name)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 classes = (

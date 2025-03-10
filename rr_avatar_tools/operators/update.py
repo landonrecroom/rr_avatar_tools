@@ -9,9 +9,10 @@ from rr_avatar_tools.utils import put_file_in_known_good_state
 
 class RR_OT_UpdateRemoveArms(RecRoomAvatarMeshOperator):
     """Remove Arms From Full Body Avatar Item"""
+
     bl_idname = 'rr.update_remove_arms'
     bl_label = 'Remove Arms From Full Body Avatar Item'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     value: bpy.props.FloatProperty(
         name="Value",
@@ -92,16 +93,13 @@ class RR_OT_UpdateRemoveArms(RecRoomAvatarMeshOperator):
         for selected in selection:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
-classes = (
-    RR_OT_UpdateRemoveArms,
-)
+classes = (RR_OT_UpdateRemoveArms,)
 
-panel = (
-    RR_OT_UpdateRemoveArms,
-)
+panel = (RR_OT_UpdateRemoveArms,)
+
 
 def register():
     for class_ in classes:

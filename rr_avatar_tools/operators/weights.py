@@ -111,8 +111,9 @@ mb_transfermeshes = {
         ('MB_TransferMesh_Wrist_Long', 'Wrist Long', ''),
         ('MB_TransferMesh_Wrist_Mitten', 'Wrist Mitten', ''),
         ('MB_TransferMesh_Wrist_Standard', 'Wrist Standard', ''),
-    ]
+    ],
 }
+
 
 def transfer_mesh_items(scene, context):
     def filter(name):
@@ -133,48 +134,58 @@ def transfer_mesh_items(scene, context):
 
     results = presets.get(
         item_type,
-        [('BodyMesh_LOD0', 'Body Mesh', ''),]
+        [
+            ('BodyMesh_LOD0', 'Body Mesh', ''),
+        ],
     )
 
     return results
+
 
 transfer_mesh_default_item = 'BodyMesh_LOD0'
 
 
 class RR_OT_WeightsTransferWeightsFromPresets(RecRoomAvatarMeshOperator):
     """Weights From Presets"""
+
     bl_idname = 'rr.weights_transfer_weights_from_skin_mesh'
     bl_label = 'Weights From Presets'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     transfer_mesh: bpy.props.EnumProperty(
-        name='Transfer Mesh',
-        items=transfer_mesh_items
+        name='Transfer Mesh', items=transfer_mesh_items
     )
 
     @classmethod
     def poll(cls, context):
-        return bpy.ops.rr.weights_transfer_fb_weights_from_skin_mesh.poll() or bpy.ops.rr.weights_transfer_mb_weights_from_skin_mesh.poll()
+        return (
+            bpy.ops.rr.weights_transfer_fb_weights_from_skin_mesh.poll()
+            or bpy.ops.rr.weights_transfer_mb_weights_from_skin_mesh.poll()
+        )
 
     def execute(self, context):
         if bpy.ops.rr.weights_transfer_fb_weights_from_skin_mesh.poll():
-            bpy.ops.rr.weights_transfer_fb_weights_from_skin_mesh(transfer_mesh=self.transfer_mesh or transfer_mesh_default_item)
+            bpy.ops.rr.weights_transfer_fb_weights_from_skin_mesh(
+                transfer_mesh=self.transfer_mesh or transfer_mesh_default_item
+            )
 
         elif bpy.ops.rr.weights_transfer_mb_weights_from_skin_mesh.poll():
-            bpy.ops.rr.weights_transfer_mb_weights_from_skin_mesh(transfer_mesh=self.transfer_mesh or transfer_mesh_default_item)
+            bpy.ops.rr.weights_transfer_mb_weights_from_skin_mesh(
+                transfer_mesh=self.transfer_mesh or transfer_mesh_default_item
+            )
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_WeightsTransferFBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
     """Transfer weights from skin mesh"""
+
     bl_idname = 'rr.weights_transfer_fb_weights_from_skin_mesh'
     bl_label = 'Transfer Weights From Full Body Skin Mesh'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     transfer_mesh: bpy.props.StringProperty(
-        name='Transfer Mesh',
-        default='BodyMesh_LOD0'
+        name='Transfer Mesh', default='BodyMesh_LOD0'
     )
 
     @classmethod
@@ -194,7 +205,9 @@ class RR_OT_WeightsTransferFBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
     def execute(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
@@ -218,11 +231,13 @@ class RR_OT_WeightsTransferFBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
                 bpy.ops.object.data_transfer(
                     data_type='VGROUP_WEIGHTS',
                     layers_select_src='ALL',
-                    layers_select_dst='NAME'
+                    layers_select_dst='NAME',
                 )
 
                 # Remove culling mask groups
-                mask_groups = [g for g in selected.vertex_groups if g.name.startswith('Msk.')]
+                mask_groups = [
+                    g for g in selected.vertex_groups if g.name.startswith('Msk.')
+                ]
                 for mask in mask_groups:
                     selected.vertex_groups.remove(mask)
 
@@ -237,18 +252,18 @@ class RR_OT_WeightsTransferFBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
         for select, mask in zip(mask_selection, bpy.context.scene.mask_list):
             mask.select = select
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_WeightsTransferMBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
     """Transfer weights from skin mesh"""
+
     bl_idname = 'rr.weights_transfer_mb_weights_from_skin_mesh'
     bl_label = 'Transfer Weights From Modern Bean Skin Mesh'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     transfer_mesh: bpy.props.StringProperty(
-        name='Transfer Mesh',
-        default='MB_BodyMesh_LOD0'
+        name='Transfer Mesh', default='MB_BodyMesh_LOD0'
     )
 
     @classmethod
@@ -261,14 +276,18 @@ class RR_OT_WeightsTransferMBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
 
             return any(map(lambda x: x.name.startswith('MB_'), obj.users_collection))
 
-        any_modern_bean_body = any(map(lambda x: is_modern_bean_body(x), cls.selected_meshes()))
+        any_modern_bean_body = any(
+            map(lambda x: is_modern_bean_body(x), cls.selected_meshes())
+        )
 
         return super().poll(context) and bool(skin_mesh) and any_modern_bean_body
 
     def execute(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
@@ -292,11 +311,13 @@ class RR_OT_WeightsTransferMBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
                 bpy.ops.object.data_transfer(
                     data_type='VGROUP_WEIGHTS',
                     layers_select_src='ALL',
-                    layers_select_dst='NAME'
+                    layers_select_dst='NAME',
                 )
 
                 # Remove culling mask groups
-                mask_groups = [g for g in selected.vertex_groups if g.name.startswith('Msk.')]
+                mask_groups = [
+                    g for g in selected.vertex_groups if g.name.startswith('Msk.')
+                ]
                 for mask in mask_groups:
                     selected.vertex_groups.remove(mask)
 
@@ -311,14 +332,15 @@ class RR_OT_WeightsTransferMBWeightsFromSkinMesh(RecRoomAvatarMeshOperator):
         for select, mask in zip(mask_selection, bpy.context.scene.mask_list):
             mask.select = select
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_WeightsTransferWeightsFromActiveMesh(RecRoomAvatarMeshOperator):
     """Transfer weights from active mesh"""
+
     bl_idname = 'rr.weights_transfer_weights_from_active_mesh'
     bl_label = 'Transfer Weights From Active Mesh'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -334,7 +356,11 @@ class RR_OT_WeightsTransferWeightsFromActiveMesh(RecRoomAvatarMeshOperator):
     def execute_(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH' and o != active]
+        selected_meshes = [
+            o
+            for o in bpy.data.objects
+            if o.select_get() and o.type == 'MESH' and o != active
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
@@ -351,11 +377,13 @@ class RR_OT_WeightsTransferWeightsFromActiveMesh(RecRoomAvatarMeshOperator):
             bpy.ops.object.data_transfer(
                 data_type='VGROUP_WEIGHTS',
                 layers_select_src='ALL',
-                layers_select_dst='NAME'
+                layers_select_dst='NAME',
             )
 
             # Remove culling mask groups
-            mask_groups = [g for g in selected.vertex_groups if g.name.startswith('Msk.')]
+            mask_groups = [
+                g for g in selected.vertex_groups if g.name.startswith('Msk.')
+            ]
             for mask in mask_groups:
                 selected.vertex_groups.remove(mask)
 
@@ -367,14 +395,15 @@ class RR_OT_WeightsTransferWeightsFromActiveMesh(RecRoomAvatarMeshOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_WeightsApplyModernBeanTorsoWeights(RecRoomAvatarMeshOperator):
     """Apply modern bean torso weights"""
+
     bl_idname = 'rr.weights_apply_modern_bean_torso_weights'
     bl_label = 'Apply Modern Bean Torso Weights'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -385,14 +414,18 @@ class RR_OT_WeightsApplyModernBeanTorsoWeights(RecRoomAvatarMeshOperator):
     def execute(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
 
         # Get weight transfer mesh
         with bpy.data.libraries.load(resources.mb_library) as (data_from, data_to):
-           data_to.objects = [a for a in data_from.objects if a == 'MB_Torso_Weight_Transfer']
+            data_to.objects = [
+                a for a in data_from.objects if a == 'MB_Torso_Weight_Transfer'
+            ]
 
         source = data_to.objects and data_to.objects[0] or None
         if source:
@@ -414,11 +447,13 @@ class RR_OT_WeightsApplyModernBeanTorsoWeights(RecRoomAvatarMeshOperator):
                 data_type='VGROUP_WEIGHTS',
                 vert_mapping='POLYINTERP_NEAREST',
                 layers_select_src='ALL',
-                layers_select_dst='NAME'
+                layers_select_dst='NAME',
             )
 
             # Remove culling mask groups
-            mask_groups = [g for g in selected.vertex_groups if g.name.startswith('Msk.')]
+            mask_groups = [
+                g for g in selected.vertex_groups if g.name.startswith('Msk.')
+            ]
             for mask in mask_groups:
                 selected.vertex_groups.remove(mask)
 
@@ -432,14 +467,15 @@ class RR_OT_WeightsApplyModernBeanTorsoWeights(RecRoomAvatarMeshOperator):
 
         bpy.data.objects.remove(source)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_WeightsApplyModernBeanHandWeights(RecRoomAvatarMeshOperator):
     """Apply modern bean hand weights"""
+
     bl_idname = 'rr.weights_apply_modern_bean_hand_weights'
     bl_label = 'Apply Modern Bean Hand Weights'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -450,14 +486,18 @@ class RR_OT_WeightsApplyModernBeanHandWeights(RecRoomAvatarMeshOperator):
     def execute(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
 
         # Get weight transfer mesh
         with bpy.data.libraries.load(resources.mb_library) as (data_from, data_to):
-           data_to.meshes = [a for a in data_from.meshes if a == 'MB_Hand_Weight_Transfer']
+            data_to.meshes = [
+                a for a in data_from.meshes if a == 'MB_Hand_Weight_Transfer'
+            ]
 
         # Process imported meshes
         for mesh in [a for a in data_to.meshes if a]:
@@ -478,11 +518,13 @@ class RR_OT_WeightsApplyModernBeanHandWeights(RecRoomAvatarMeshOperator):
                 data_type='VGROUP_WEIGHTS',
                 vert_mapping='POLYINTERP_NEAREST',
                 layers_select_src='ALL',
-                layers_select_dst='NAME'
+                layers_select_dst='NAME',
             )
 
             # Remove culling mask groups
-            mask_groups = [g for g in selected.vertex_groups if g.name.startswith('Msk.')]
+            mask_groups = [
+                g for g in selected.vertex_groups if g.name.startswith('Msk.')
+            ]
             for mask in mask_groups:
                 selected.vertex_groups.remove(mask)
 
@@ -496,7 +538,7 @@ class RR_OT_WeightsApplyModernBeanHandWeights(RecRoomAvatarMeshOperator):
 
         bpy.data.objects.remove(source)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 @bpy.app.handlers.persistent
@@ -507,7 +549,9 @@ def update_label(cls, scene):
     if not active:
         RR_OT_WeightsTransferWeightsFromActiveMesh.bl_label = f'Transfer Weights'
     else:
-        RR_OT_WeightsTransferWeightsFromActiveMesh.bl_label = f'Weights from {active.name}'
+        RR_OT_WeightsTransferWeightsFromActiveMesh.bl_label = (
+            f'Weights from {active.name}'
+        )
 
 
 classes = (

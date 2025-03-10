@@ -1,5 +1,6 @@
 import bpy
 
+
 class RecRoomAvatarPanel(bpy.types.Panel):
     @classmethod
     def poll(cls, context):
@@ -20,4 +21,6 @@ class RecRoomOperatorPanel(RecRoomAvatarPanel):
         column = layout.column(align=True)
 
         for operator in self.rr_operators:
-            column.operator(operator.bl_idname, text=operator.rr_label or operator.bl_label)
+            column.operator(
+                operator.bl_idname, text=operator.rr_label or operator.bl_label
+            )

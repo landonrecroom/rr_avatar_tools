@@ -26,9 +26,7 @@ class SCENE_PT_RRAvatarToolsCleanupPanel(RecRoomOperatorPanel):
         )
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsCleanupPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsCleanupPanel,)
 
 
 def register():

@@ -17,17 +17,16 @@ def cleanup_name(name):
 
 
 class SCENE_UL_RRMaskList(bpy.types.UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_property, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_property, index
+    ):
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
             row = layout.row()
 
             col = row.column()
             col.enabled = item.select
 
-            col.label(
-                text=cleanup_name(item.name),
-                icon='GROUP_VERTEX'
-            )
+            col.label(text=cleanup_name(item.name), icon='GROUP_VERTEX')
 
             col = row.column()
             col.prop(item, 'select', text='')
@@ -35,6 +34,7 @@ class SCENE_UL_RRMaskList(bpy.types.UIList):
         elif self.layout_type == 'GRID':
             layout.alignment = 'CENTER'
             layout.label(text='')
+
 
 class SCENE_PT_RRAvatarMaskPanel(RecRoomAvatarPanel):
     bl_label = 'Skin Culling'
@@ -62,7 +62,7 @@ class SCENE_PT_RRAvatarMaskPanel(RecRoomAvatarPanel):
             'mask_list',
             scene,
             'mask_list_index',
-            rows=rows
+            rows=rows,
         )
 
 
@@ -84,7 +84,9 @@ def register():
         bpy.utils.register_class(MaskProperty)
         bpy.types.Scene.mask_list = bpy.props.CollectionProperty(type=MaskProperty)
 
-    bpy.types.Scene.mask_list_index = bpy.props.IntProperty(name='Index for mask list', default=0)
+    bpy.types.Scene.mask_list_index = bpy.props.IntProperty(
+        name='Index for mask list', default=0
+    )
 
 
 def unregister():

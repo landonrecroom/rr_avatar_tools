@@ -4,23 +4,27 @@ import rr_avatar_tools
 from rr_avatar_tools.panels.base import RecRoomAvatarPanel
 from rr_avatar_tools.properties import MaskProperty
 
+
 class OutfitProperty(bpy.types.PropertyGroup):
     name: bpy.props.StringProperty()
     select: bpy.props.BoolProperty(default=True)
 
 
 class SCENE_UL_RROutfitList(bpy.types.UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_property, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_property, index
+    ):
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
-            if not (layer_collection := rr_avatar_tools.data.layer_collections.get(item.name)):
+            if not (
+                layer_collection := rr_avatar_tools.data.layer_collections.get(
+                    item.name
+                )
+            ):
                 return
 
             row = layout.row()
 
-            row.label(
-                text=item.name,
-                icon='MATCLOTH'
-            )
+            row.label(text=item.name, icon='MATCLOTH')
 
             # Visibility
             row.prop(
@@ -33,6 +37,7 @@ class SCENE_UL_RROutfitList(bpy.types.UIList):
         elif self.layout_type == 'GRID':
             layout.alignment = 'CENTER'
             layout.label(text='')
+
 
 class SCENE_PT_RRAvatarOutfitPanel(RecRoomAvatarPanel):
     bl_label = 'Outfits'
@@ -65,7 +70,7 @@ class SCENE_PT_RRAvatarOutfitPanel(RecRoomAvatarPanel):
             'outfit_list',
             scene,
             'outfit_list_index',
-            rows=rows
+            rows=rows,
         )
 
 
@@ -88,7 +93,9 @@ def register():
         bpy.utils.register_class(MaskProperty)
         bpy.types.Scene.outfit_list = bpy.props.CollectionProperty(type=OutfitProperty)
 
-    bpy.types.Scene.outfit_list_index = bpy.props.IntProperty(name='Index for outfit list', default=0)
+    bpy.types.Scene.outfit_list_index = bpy.props.IntProperty(
+        name='Index for outfit list', default=0
+    )
 
 
 def unregister():

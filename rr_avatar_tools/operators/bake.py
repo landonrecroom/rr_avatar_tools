@@ -9,9 +9,10 @@ from rr_avatar_tools.operators.base import RecRoomAvatarMeshOperator
 
 class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
     """Bake Culling Mask to UV Channels"""
+
     bl_idname = 'rr.bake_culling_mask_to_uv_channels'
     bl_label = 'Bake Culling Mask to UV Channels'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
     rr_required_mode = 'OBJECT'
 
     @classmethod
@@ -26,7 +27,9 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
         if not cls.active_mesh():
             return []
 
-        vertex_groups = [g for g in cls.active_mesh().vertex_groups if g.name.startswith('Msk.')]
+        vertex_groups = [
+            g for g in cls.active_mesh().vertex_groups if g.name.startswith('Msk.')
+        ]
 
         return sorted(vertex_groups, key=lambda g: g.name)
 
@@ -41,7 +44,7 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
         return super().poll(context)
 
     @classmethod
-    def encode_vertex(cls, vertex:bpy.types.MeshVertex) -> int:
+    def encode_vertex(cls, vertex: bpy.types.MeshVertex) -> int:
         # Get sequence of ordered mask groups
         mask_groups = cls.mask_vertex_groups()
 
@@ -65,7 +68,9 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
 
         return value
 
-    def pack_vertex(self, vertex:bpy.types.MeshVertex) -> Tuple[mathutils.Vector, mathutils.Vector]:
+    def pack_vertex(
+        self, vertex: bpy.types.MeshVertex
+    ) -> Tuple[mathutils.Vector, mathutils.Vector]:
         value = self.encode_vertex(vertex)
         data = struct.pack('<q', value)
 
@@ -80,8 +85,12 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
         selected = self.active_mesh()
         data: bpy.types.Mesh = selected.data
 
-        uv_layer1 = data.uv_layers.get('BitPackedLayerMasks_UVLayer_1') or data.uv_layers.new(name='BitPackedLayerMasks_UVLayer_1')
-        uv_layer2 = data.uv_layers.get('BitPackedLayerMasks_UVLayer_2') or data.uv_layers.new(name='BitPackedLayerMasks_UVLayer_2')
+        uv_layer1 = data.uv_layers.get(
+            'BitPackedLayerMasks_UVLayer_1'
+        ) or data.uv_layers.new(name='BitPackedLayerMasks_UVLayer_1')
+        uv_layer2 = data.uv_layers.get(
+            'BitPackedLayerMasks_UVLayer_2'
+        ) or data.uv_layers.new(name='BitPackedLayerMasks_UVLayer_2')
 
         for polygon in data.polygons:
             for loop_index in polygon.loop_indices:
@@ -91,12 +100,10 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
                 uv_layer1.data[loop_index].uv = uv1
                 uv_layer2.data[loop_index].uv = uv2
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
-classes = (
-    RR_OT_BakeCullingMaskToUVChannels,
-)
+classes = (RR_OT_BakeCullingMaskToUVChannels,)
 
 
 def register():

@@ -31,7 +31,17 @@ class SCENE_UL_RRExportGroupList(bpy.types.UIList):
 
         return None
 
-    def draw_item(self, context, layout: bpy.types.UILayout, data, item, icon, active_data, active_property, index):
+    def draw_item(
+        self,
+        context,
+        layout: bpy.types.UILayout,
+        data,
+        item,
+        icon,
+        active_data,
+        active_property,
+        index,
+    ):
         collection = item.collection()
         layer_collection = item.layer_collection()
 
@@ -59,7 +69,7 @@ class SCENE_UL_RRExportGroupList(bpy.types.UIList):
                 'COLOR_05': 'COLLECTION_COLOR_05',
                 'COLOR_06': 'COLLECTION_COLOR_06',
                 'COLOR_07': 'COLLECTION_COLOR_07',
-                'COLOR_08': 'COLLECTION_COLOR_08'
+                'COLOR_08': 'COLLECTION_COLOR_08',
             }.get(collection.color_tag) or 'OUTLINER_COLLECTION'
 
             kwargs = {
@@ -74,11 +84,7 @@ class SCENE_UL_RRExportGroupList(bpy.types.UIList):
                 kwargs['icon'] = icon
 
             # Name
-            subrow.prop(
-                collection,
-                'name',
-                **kwargs
-            )
+            subrow.prop(collection, 'name', **kwargs)
 
             if not layer_collection:
                 row.label(text="Missing LayerCollection")
@@ -97,7 +103,7 @@ class SCENE_UL_RRExportGroupList(bpy.types.UIList):
             subrow.operator(
                 'rr.export_select_avatar_item_meshes',
                 icon='RESTRICT_SELECT_OFF',
-                text=''
+                text='',
             ).target = collection.name
 
             # Bounding box
@@ -106,27 +112,15 @@ class SCENE_UL_RRExportGroupList(bpy.types.UIList):
                 if not bounds.select:
                     icon = 'SELECT_SET'
 
-                subrow.prop(
-                    bounds,
-                    'select',
-                    icon_only=True,
-                    icon=icon
-                )
+                subrow.prop(bounds, 'select', icon_only=True, icon=icon)
             else:
                 col = subrow.column()
                 col.enabled = False
-                col.prop(
-                    self,
-                    'nop',
-                    icon_only=True,
-                    icon='X'
-                )
+                col.prop(self, 'nop', icon_only=True, icon='X')
 
             # Delete
             subrow.operator(
-                'rr.export_delete_avatar_item',
-                icon='TRASH',
-                text=''
+                'rr.export_delete_avatar_item', icon='TRASH', text=''
             ).target = collection.name
 
         elif self.layout_type == 'GRID':
@@ -136,6 +130,7 @@ class SCENE_UL_RRExportGroupList(bpy.types.UIList):
 
 class SCENE_PT_RRAvatarToolsExportPanel(RecRoomAvatarPanel):
     """Creates a panel in the object properties window."""
+
     bl_label = 'Avatar Items'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -150,19 +145,31 @@ class SCENE_PT_RRAvatarToolsExportPanel(RecRoomAvatarPanel):
 
         # LOD Toggle buttons
         row = layout.row(align=True)
-        row.operator('rr.export_toggle_avatar_item_visibility_by_lod', text='ALL').lod = 'ALL'
-        row.operator('rr.export_toggle_avatar_item_visibility_by_lod', text='LOD0').lod = 'LOD0'
-        row.operator('rr.export_toggle_avatar_item_visibility_by_lod', text='LOD1').lod = 'LOD1'
-        row.operator('rr.export_toggle_avatar_item_visibility_by_lod', text='LOD2').lod = 'LOD2'
+        row.operator(
+            'rr.export_toggle_avatar_item_visibility_by_lod', text='ALL'
+        ).lod = 'ALL'
+        row.operator(
+            'rr.export_toggle_avatar_item_visibility_by_lod', text='LOD0'
+        ).lod = 'LOD0'
+        row.operator(
+            'rr.export_toggle_avatar_item_visibility_by_lod', text='LOD1'
+        ).lod = 'LOD1'
+        row.operator(
+            'rr.export_toggle_avatar_item_visibility_by_lod', text='LOD2'
+        ).lod = 'LOD2'
 
         # Collection visibility buttons
         row = layout.row(align=True)
         row.emboss = 'PULLDOWN_MENU'
-        fb_collection = bpy.context.view_layer.layer_collection.children.get('Full_Body')
+        fb_collection = bpy.context.view_layer.layer_collection.children.get(
+            'Full_Body'
+        )
         if fb_collection:
             row.prop(fb_collection, 'hide_viewport', text='Full Body')
 
-        mb_collection = bpy.context.view_layer.layer_collection.children.get('Modern_Bean_Body')
+        mb_collection = bpy.context.view_layer.layer_collection.children.get(
+            'Modern_Bean_Body'
+        )
         if mb_collection:
             row.prop(mb_collection, 'hide_viewport', text='Modern Bean')
 
@@ -177,7 +184,7 @@ class SCENE_PT_RRAvatarToolsExportPanel(RecRoomAvatarPanel):
             'export_list',
             scene,
             'export_list_index',
-            rows=rows
+            rows=rows,
         )
 
         prefs = bpy.context.preferences.addons['rr_avatar_tools'].preferences
@@ -205,20 +212,28 @@ def register():
     import bpy.utils.previews
 
     preview_collection = bpy.utils.previews.new()
-    preview_collection.load("error_yellow", rr_avatar_tools.resources.error_icon, 'IMAGE')
+    preview_collection.load(
+        "error_yellow", rr_avatar_tools.resources.error_icon, 'IMAGE'
+    )
 
     for class_ in classes:
         bpy.utils.register_class(class_)
 
     try:
-        bpy.types.Scene.export_list = bpy.props.CollectionProperty(type=ExportGroupProperty)
+        bpy.types.Scene.export_list = bpy.props.CollectionProperty(
+            type=ExportGroupProperty
+        )
 
     # On reload Blender doesn't think ExportGroupProperty has been registered, so register it
     except ValueError:
         bpy.utils.register_class(ExportGroupProperty)
-        bpy.types.Scene.export_list = bpy.props.CollectionProperty(type=ExportGroupProperty)
+        bpy.types.Scene.export_list = bpy.props.CollectionProperty(
+            type=ExportGroupProperty
+        )
 
-    bpy.types.Scene.export_list_index = bpy.props.IntProperty(name='Index for my_list', default=0)
+    bpy.types.Scene.export_list_index = bpy.props.IntProperty(
+        name='Index for my_list', default=0
+    )
 
 
 def unregister():

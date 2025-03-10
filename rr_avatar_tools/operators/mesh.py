@@ -14,9 +14,10 @@ def get_vertex_group_items(scene, context):
 
 class RR_OT_MeshSelectVertexByVertexGroup(bpy.types.Operator):
     """Select by Vertex Weight"""
+
     bl_idname = 'rr.mesh_select_by_vertex_group'
     bl_label = 'Select by Vertex Weight'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
     rr_required_mode = 'OBJECT'
 
     weight: bpy.props.FloatProperty(
@@ -35,12 +36,11 @@ class RR_OT_MeshSelectVertexByVertexGroup(bpy.types.Operator):
             ('GREATER_THAN', 'Greater Than', ''),
             ('NOT_EQUAL', 'Not Equal To', ''),
         ],
-        default='GREATER_THAN'
+        default='GREATER_THAN',
     )
 
     vertex_group: bpy.props.EnumProperty(
-        name='Vertex Group',
-        items=get_vertex_group_items
+        name='Vertex Group', items=get_vertex_group_items
     )
 
     @classmethod
@@ -55,7 +55,7 @@ class RR_OT_MeshSelectVertexByVertexGroup(bpy.types.Operator):
 
         group = object_.vertex_groups.get(self.vertex_group)
         if not group:
-            return { 'FINISHED' }
+            return {'FINISHED'}
 
         op = {
             'LESS_THAN': operator.lt,
@@ -75,26 +75,29 @@ class RR_OT_MeshSelectVertexByVertexGroup(bpy.types.Operator):
 
         bpy.ops.object.mode_set(mode='EDIT')
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 def draw_select_by_vertex_group_button(self, context):
     self.layout.operator('rr.mesh_select_by_vertex_group', text='Vertex Weight')
 
 
-classes = (
-    RR_OT_MeshSelectVertexByVertexGroup,
-)
+classes = (RR_OT_MeshSelectVertexByVertexGroup,)
+
 
 def register():
     for class_ in classes:
         bpy.utils.register_class(class_)
 
-    bpy.types.VIEW3D_MT_edit_mesh_select_by_trait.append(draw_select_by_vertex_group_button)
+    bpy.types.VIEW3D_MT_edit_mesh_select_by_trait.append(
+        draw_select_by_vertex_group_button
+    )
 
 
 def unregister():
     for class_ in classes:
         bpy.utils.unregister_class(class_)
 
-    bpy.types.VIEW3D_MT_edit_mesh_select_by_trait.remove(draw_select_by_vertex_group_button)
+    bpy.types.VIEW3D_MT_edit_mesh_select_by_trait.remove(
+        draw_select_by_vertex_group_button
+    )

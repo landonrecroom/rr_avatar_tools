@@ -7,6 +7,7 @@ from rr_avatar_tools.budgets import budgets
 
 class SCENE_PT_RRAvatarToolsDiagnosticsPanel(RecRoomAvatarPanel):
     """Creates a panel in the object properties window."""
+
     bl_label = 'Validation'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -29,13 +30,19 @@ class SCENE_PT_RRAvatarToolsDiagnosticsPanel(RecRoomAvatarPanel):
 
         # Only show diagnostics for selected avatar item
         prop = context.scene.export_list[context.scene.export_list_index]
-        collections = [c for c in rr_avatar_tools.data.collections if c.get('rec_room_uuid') == prop.uuid]
+        collections = [
+            c
+            for c in rr_avatar_tools.data.collections
+            if c.get('rec_room_uuid') == prop.uuid
+        ]
 
         box = column.box()
 
         # Statistics
         for collection in collections:
-            for mesh in [m for m in collection.objects if m.type == 'MESH' and '_LOD' in m.name]: #self.selected_meshes():
+            for mesh in [
+                m for m in collection.objects if m.type == 'MESH' and '_LOD' in m.name
+            ]:  # self.selected_meshes():
                 index = mesh.name.find('LOD')
                 name = mesh.name[index:]
 
@@ -60,13 +67,12 @@ class SCENE_PT_RRAvatarToolsDiagnosticsPanel(RecRoomAvatarPanel):
 
                 triangle_count = sum([len(p.vertices) - 2 for p in mesh.data.polygons])
 
-                icon='CHECKMARK'
+                icon = 'CHECKMARK'
                 if triangle_count > triangle_budget:
                     icon = 'ERROR'
 
                 r.label(
-                    text=f'{name} Tris {triangle_count} / {triangle_budget}',
-                    icon=icon
+                    text=f'{name} Tris {triangle_count} / {triangle_budget}', icon=icon
                 )
 
         layout.separator()
@@ -74,8 +80,14 @@ class SCENE_PT_RRAvatarToolsDiagnosticsPanel(RecRoomAvatarPanel):
 
         # Diagnostics
         for collection in collections:
-            for mesh in [m for m in collection.objects if m.type == 'MESH' and '_LOD' in m.name]: #self.selected_meshes():
-                results = [op for op in rr_avatar_tools.operators.diagnostics.classes if op.diagnose(mesh)]
+            for mesh in [
+                m for m in collection.objects if m.type == 'MESH' and '_LOD' in m.name
+            ]:  # self.selected_meshes():
+                results = [
+                    op
+                    for op in rr_avatar_tools.operators.diagnostics.classes
+                    if op.diagnose(mesh)
+                ]
 
                 if not results:
                     continue
@@ -104,9 +116,7 @@ class SCENE_PT_RRAvatarToolsDiagnosticsPanel(RecRoomAvatarPanel):
                 column.separator()
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsDiagnosticsPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsDiagnosticsPanel,)
 
 
 def register():

@@ -18,15 +18,13 @@ from rr_avatar_tools.utils import put_file_in_known_good_state
 
 class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
     """Set up selected meshes as a new item. Select all LODs for a single item before running this command"""
+
     bl_idname = 'rr.create_avatar_item'
     bl_label = 'Create Avatar Item'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
     rr_required_mode = 'OBJECT'
 
-    item_name: StringProperty(
-        name='Item Name',
-        description=''
-    )
+    item_name: StringProperty(name='Item Name', description='')
 
     item_type: bpy.props.EnumProperty(
         name='Item Type',
@@ -44,7 +42,7 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
             ('LEG', 'Leg', ''),
             ('SHOE', 'Shoe', ''),
         ],
-        default='SHIRT'
+        default='SHIRT',
     )
 
     body_type: EnumProperty(
@@ -60,7 +58,7 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
     transfer_weights: BoolProperty(
         name='Transfer Weights',
         description='Copy weights based on item type',
-        default=True
+        default=True,
     )
 
     @classmethod
@@ -88,7 +86,11 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
         self.ensure_name()
 
         # Don't default to transferring weights if meshes already have weights
-        names = [vertex_group.name for mesh in self.selected_meshes() for vertex_group in mesh.vertex_groups]
+        names = [
+            vertex_group.name
+            for mesh in self.selected_meshes()
+            for vertex_group in mesh.vertex_groups
+        ]
         self.transfer_weights = not any(map(lambda x: x.startswith('Jnt.'), names))
 
     def invoke(self, context, event):
@@ -99,10 +101,10 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
 
         self._execute(context)
 
-        return { 'RUNNING_MODAL' }
+        return {'RUNNING_MODAL'}
 
     def modal(self, context, event):
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
     def execute(self, context):
         return self._execute(context)
@@ -114,12 +116,18 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
         self.ensure_name()
 
         if self.body_type == 'FULL_BODY':
-            bpy.ops.rr.create_full_body_avatar_item(item_name=self.item_name, transfer_weights=self.transfer_weights)
+            bpy.ops.rr.create_full_body_avatar_item(
+                item_name=self.item_name, transfer_weights=self.transfer_weights
+            )
 
         elif self.body_type == 'MODERN_BEAN_BODY':
-            bpy.ops.rr.create_modern_bean_body_avatar_item(item_name=self.item_name, item_type=self.item_type, transfer_weights=self.transfer_weights)
+            bpy.ops.rr.create_modern_bean_body_avatar_item(
+                item_name=self.item_name,
+                item_type=self.item_type,
+                transfer_weights=self.transfer_weights,
+            )
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
     def ensure_name(self):
         parts = []
@@ -140,7 +148,20 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
 
         last = parts[-1].capitalize()
 
-        if last in ('Belt', 'Ear', 'Eye', 'Hair', 'Hat', 'Mouth', 'Neck', 'Wrist', 'Shirt', 'Shoulder', 'Leg', 'Shoe'):
+        if last in (
+            'Belt',
+            'Ear',
+            'Eye',
+            'Hair',
+            'Hat',
+            'Mouth',
+            'Neck',
+            'Wrist',
+            'Shirt',
+            'Shoulder',
+            'Leg',
+            'Shoe',
+        ):
             parts[-1] = self.item_type.title()
         else:
             parts.append(self.item_type.title())
@@ -166,19 +187,17 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
 
 class RR_OT_CreateFullBodyAvatarItem(RecRoomAvatarMeshOperator):
     """Setup file for avatar work"""
+
     bl_idname = 'rr.create_full_body_avatar_item'
     bl_label = 'Create Full Body Avatar Item'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    item_name: StringProperty(
-        name='Item Name',
-        description=''
-    )
+    item_name: StringProperty(name='Item Name', description='')
 
     transfer_weights: BoolProperty(
         name='Transfer Weights',
         description='Copy weights based on item type',
-        default=True
+        default=True,
     )
 
     @classmethod
@@ -202,7 +221,7 @@ class RR_OT_CreateFullBodyAvatarItem(RecRoomAvatarMeshOperator):
         rig = bpy.data.objects.get('Avatar_Skeleton')
         if not rig:
             self.report({'ERROR'}, 'Missing Avatar_Skeleton armature')
-            return { 'CANCELLED' }
+            return {'CANCELLED'}
 
         if dest not in rig.users_collection:
             dest.objects.link(rig)
@@ -243,19 +262,17 @@ class RR_OT_CreateFullBodyAvatarItem(RecRoomAvatarMeshOperator):
                 bpy.context.view_layer.objects.active = old_active
                 body_mesh.select_set(False)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_CreateModernBeanBodyAvatarItem(RecRoomAvatarMeshOperator):
     """Setup file for avatar work"""
+
     bl_idname = 'rr.create_modern_bean_body_avatar_item'
     bl_label = 'Create Modern Bean Body Avatar Item'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    item_name: StringProperty(
-        name='Item Name',
-        description=''
-    )
+    item_name: StringProperty(name='Item Name', description='')
 
     item_type: bpy.props.EnumProperty(
         name='Item Type',
@@ -273,13 +290,13 @@ class RR_OT_CreateModernBeanBodyAvatarItem(RecRoomAvatarMeshOperator):
             ('LEG', 'Leg', ''),
             ('SHOE', 'Shoe', ''),
         ],
-        default='SHIRT'
+        default='SHIRT',
     )
 
     transfer_weights: BoolProperty(
         name='Transfer Weights',
         description='Copy weights based on item type',
-        default=True
+        default=True,
     )
 
     @classmethod
@@ -303,7 +320,7 @@ class RR_OT_CreateModernBeanBodyAvatarItem(RecRoomAvatarMeshOperator):
         rig = bpy.data.objects.get('Avatar_Skeleton')
         if not rig:
             self.report({'ERROR'}, 'Missing Avatar_Skeleton armature')
-            return { 'CANCELLED' }
+            return {'CANCELLED'}
 
         if dest not in rig.users_collection:
             dest.objects.link(rig)
@@ -350,9 +367,18 @@ class RR_OT_CreateModernBeanBodyAvatarItem(RecRoomAvatarMeshOperator):
             modifer.vertex_group = ''
 
             # Apply weights
-            weight_transferrable_item_types = ('BELT', 'NECK', 'SHIRT', 'SHOULDER', 'WRIST')
+            weight_transferrable_item_types = (
+                'BELT',
+                'NECK',
+                'SHIRT',
+                'SHOULDER',
+                'WRIST',
+            )
 
-            if self.transfer_weights and self.item_type in weight_transferrable_item_types:
+            if (
+                self.transfer_weights
+                and self.item_type in weight_transferrable_item_types
+            ):
                 if self.item_type == 'WRIST':
                     if bpy.ops.rr.weights_apply_modern_bean_hand_weights.poll():
                         bpy.ops.rr.weights_apply_modern_bean_hand_weights()
@@ -369,14 +395,15 @@ class RR_OT_CreateModernBeanBodyAvatarItem(RecRoomAvatarMeshOperator):
         for mesh in selected_meshes:
             mesh.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_CreateLeftSideAvatarItem(RecRoomAvatarMeshOperator):
     """Duplicate and mirror an item across the z-axis"""
+
     bl_idname = 'rr.create_left_side_avatar_item'
     bl_label = 'Create Left Side Item'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -434,7 +461,9 @@ class RR_OT_CreateLeftSideAvatarItem(RecRoomAvatarMeshOperator):
             bpy.context.view_layer.objects.active = selected
 
             # Add modifier
-            modifier: bpy.types.MirrorModifier = selected.modifiers.new('Mirror', 'MIRROR')
+            modifier: bpy.types.MirrorModifier = selected.modifiers.new(
+                'Mirror', 'MIRROR'
+            )
 
             # Configure modifier
             modifier.use_axis[0] = True
@@ -448,7 +477,9 @@ class RR_OT_CreateLeftSideAvatarItem(RecRoomAvatarMeshOperator):
             bpy.ops.mesh.select_all(action='SELECT')
 
             # Delete right-side geo
-            bpy.ops.mesh.bisect(plane_co=(0, 0, 0), plane_no=(1, 0, 0), clear_inner=True, flip=False)
+            bpy.ops.mesh.bisect(
+                plane_co=(0, 0, 0), plane_no=(1, 0, 0), clear_inner=True, flip=False
+            )
             bpy.ops.object.mode_set(mode='OBJECT')
 
             bpy.context.view_layer.objects.active = None
@@ -462,14 +493,15 @@ class RR_OT_CreateLeftSideAvatarItem(RecRoomAvatarMeshOperator):
         for selected in duplicated_selection:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_CreateModerBeanFromFullBodyItem(RecRoomAvatarOperator):
     """Create Modern Bean Avatar Item from Full Body"""
+
     bl_idname = 'rr.create_modern_bean_from_full_body'
     bl_label = 'Create Modern Bean Avatar Item from Full Body'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
     @classmethod
     def poll(cls, context):
@@ -528,7 +560,7 @@ class RR_OT_CreateModerBeanFromFullBodyItem(RecRoomAvatarOperator):
         for duplicate in duplicates:
             duplicate.select_set(False)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 classes = (
@@ -544,6 +576,7 @@ panel = (
     RR_OT_CreateLeftSideAvatarItem,
     RR_OT_CreateModerBeanFromFullBodyItem,
 )
+
 
 def register():
     for class_ in classes:

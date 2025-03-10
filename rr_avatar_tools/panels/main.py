@@ -6,6 +6,7 @@ from rr_avatar_tools.panels.base import RecRoomAvatarPanel
 
 class SCENE_PT_RRAvatarToolsMainPanel(RecRoomAvatarPanel):
     """Main Rec Room Avatar Tools Panel"""
+
     bl_label = f'{rr_avatar_tools.bl_info["name"]} v{rr_avatar_tools.__version__}'
     bl_idname = 'SCENE_PT_RRAvatarToolsMainPanel'
     bl_space_type = 'VIEW_3D'
@@ -15,16 +16,12 @@ class SCENE_PT_RRAvatarToolsMainPanel(RecRoomAvatarPanel):
     def draw(self, context):
         layout = self.layout
 
-        layout.operator(
-            'wm.url_open',
-            text='Documentation',
-            icon='HELP'
-        ).url=rr_avatar_tools.bl_info['doc_url']
+        layout.operator('wm.url_open', text='Documentation', icon='HELP').url = (
+            rr_avatar_tools.bl_info['doc_url']
+        )
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsMainPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsMainPanel,)
 
 
 def register():

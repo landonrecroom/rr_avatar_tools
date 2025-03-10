@@ -6,6 +6,7 @@ import rr_avatar_tools.operators
 
 class SCENE_PT_RRAvatarToolsEverythingPanel(bpy.types.Panel):
     """Creates a panel in the object properties window."""
+
     bl_label = 'Debug'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -14,10 +15,12 @@ class SCENE_PT_RRAvatarToolsEverythingPanel(bpy.types.Panel):
 
     @classmethod
     def poll(cls, context):
-        return bpy.context.preferences.addons['rr_avatar_tools'].preferences.show_all_operators
+        return bpy.context.preferences.addons[
+            'rr_avatar_tools'
+        ].preferences.show_all_operators
 
     def draw_header(self, context):
-            self.layout.label(text='', icon='EXPERIMENTAL')
+        self.layout.label(text='', icon='EXPERIMENTAL')
 
     def draw(self, context):
         layout = self.layout
@@ -31,9 +34,7 @@ class SCENE_PT_RRAvatarToolsEverythingPanel(bpy.types.Panel):
                 col.operator(operator.bl_idname, text=operator.bl_label)
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsEverythingPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsEverythingPanel,)
 
 
 def register():

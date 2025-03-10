@@ -500,5 +500,5 @@ bones = {
             'Jnt.Spine.Mid',
             'Jnt.Spine.Mid.Tweak',
         },
-    }
+    },
 }

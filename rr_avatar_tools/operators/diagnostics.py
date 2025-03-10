@@ -6,6 +6,7 @@ from rr_avatar_tools.budgets import budgets
 from rr_avatar_tools.bones import bones
 from rr_avatar_tools.bounds import bounding_boxes
 
+
 class Icons:
     WARNING = 'ERROR'
     ERROR = 'CANCEL'
@@ -14,10 +15,7 @@ class Icons:
 class RecRoomDiagnosticOperator(RecRoomAvatarMeshOperator):
     rr_required_mode = 'OBJECT'
 
-    label = {
-        'text': '',
-        'icon': Icons.WARNING
-    }
+    label = {'text': '', 'icon': Icons.WARNING}
 
     target: bpy.props.StringProperty()
 
@@ -37,14 +35,12 @@ class RecRoomDiagnosticOperator(RecRoomAvatarMeshOperator):
 
 class RR_OT_DiagnosticsFixUnappliedTransforms(RecRoomDiagnosticOperator):
     """"""
+
     bl_idname = 'rr.diagnostics_fix_unapplied_transforms'
     bl_label = 'Unapplied Transforms'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Unapplied Transforms',
-        'icon': Icons.WARNING
-    }
+    label = {'text': 'Unapplied Transforms', 'icon': Icons.WARNING}
 
     @classmethod
     def diagnose(cls, mesh):
@@ -70,7 +66,9 @@ class RR_OT_DiagnosticsFixUnappliedTransforms(RecRoomDiagnosticOperator):
     def execute_(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
@@ -92,19 +90,17 @@ class RR_OT_DiagnosticsFixUnappliedTransforms(RecRoomDiagnosticOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsFixMissingArmatureModifier(RecRoomDiagnosticOperator):
     """"""
+
     bl_idname = 'rr.diagnostics_fix_missing_armature_modifier'
     bl_label = 'Missing Armature Modifier'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': bl_label,
-        'icon': Icons.ERROR
-    }
+    label = {'text': bl_label, 'icon': Icons.ERROR}
 
     @classmethod
     def get_body_type(cls, mesh):
@@ -143,7 +139,7 @@ class RR_OT_DiagnosticsFixMissingArmatureModifier(RecRoomDiagnosticOperator):
         if len(modifiers) != 1:
             return True
 
-        modifier:bpy.types.ArmatureModifier = modifiers[0]
+        modifier: bpy.types.ArmatureModifier = modifiers[0]
 
         # Get the correct rig for this item
         rig = cls.get_rig(mesh)
@@ -152,7 +148,7 @@ class RR_OT_DiagnosticsFixMissingArmatureModifier(RecRoomDiagnosticOperator):
 
         uses_vertex_groups = (
             bpy.data.objects.get('Torso.Rig'),
-            bpy.data.objects.get('Head.Rig')
+            bpy.data.objects.get('Head.Rig'),
         )
 
         # Ensure Torso and Head items have vertex group set
@@ -167,10 +163,11 @@ class RR_OT_DiagnosticsFixMissingArmatureModifier(RecRoomDiagnosticOperator):
         def can_fix_(o):
             return cls.get_body_type(o) in ('FULLBODY', 'MODERNBEAN')
 
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         return any(map(lambda x: can_fix_(x), selected_meshes))
-
 
     def get_or_create_armature_modifier(self, mesh) -> bpy.types.ArmatureModifier:
         modifiers = [m for m in mesh.modifiers if m.type == 'ARMATURE']
@@ -199,7 +196,9 @@ class RR_OT_DiagnosticsFixMissingArmatureModifier(RecRoomDiagnosticOperator):
     def execute_(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
@@ -225,19 +224,17 @@ class RR_OT_DiagnosticsFixMissingArmatureModifier(RecRoomDiagnosticOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsFixCullingMaskVertexGroups(RecRoomDiagnosticOperator):
     """Remove culling mask vertex group"""
+
     bl_idname = 'rr.diagnostics_fix_culling_mask_vertex_groups'
     bl_label = 'Culling Mask Vertex Groups'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Culling Mask Vertex Groups',
-        'icon': Icons.WARNING
-    }
+    label = {'text': 'Culling Mask Vertex Groups', 'icon': Icons.WARNING}
 
     @classmethod
     def diagnose(cls, mesh):
@@ -280,25 +277,33 @@ class RR_OT_DiagnosticsFixCullingMaskVertexGroups(RecRoomDiagnosticOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsLimitBonesPerVertex(RecRoomDiagnosticOperator):
     """Fix bone groups"""
+
     bl_idname = 'rr.diagnostics_limit_bones_per_vertex'
     bl_label = 'Limit Bones per Vertex'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Limit Bones per Vertex',
-        'icon': Icons.WARNING
-    }
+    label = {'text': 'Limit Bones per Vertex', 'icon': Icons.WARNING}
 
     @classmethod
     def diagnose(cls, mesh):
-        bone_groups = set(g.index for g in mesh.vertex_groups if g.name.startswith('Jnt.'))
+        bone_groups = set(
+            g.index for g in mesh.vertex_groups if g.name.startswith('Jnt.')
+        )
 
-        return any(map(lambda x: len(x) > 4, [{g.group for g in v.groups if g.group in bone_groups} for v in mesh.data.vertices]))
+        return any(
+            map(
+                lambda x: len(x) > 4,
+                [
+                    {g.group for g in v.groups if g.group in bone_groups}
+                    for v in mesh.data.vertices
+                ],
+            )
+        )
 
     @classmethod
     def can_fix(cls, context):
@@ -316,7 +321,7 @@ class RR_OT_DiagnosticsLimitBonesPerVertex(RecRoomDiagnosticOperator):
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
 
-        mesh:bpy.types.Object = bpy.data.objects.get(self.target)
+        mesh: bpy.types.Object = bpy.data.objects.get(self.target)
         if mesh:
             bpy.context.view_layer.objects.active = mesh
             mesh.select_set(True)
@@ -349,19 +354,17 @@ class RR_OT_DiagnosticsLimitBonesPerVertex(RecRoomDiagnosticOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsFixNgons(RecRoomDiagnosticOperator):
     """"""
+
     bl_idname = 'rr.diagnostics_fix_ngons'
     bl_label = 'Fix Ngons'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Ngon faces',
-        'icon': Icons.WARNING
-    }
+    label = {'text': 'Ngon faces', 'icon': Icons.WARNING}
 
     @classmethod
     def diagnose(cls, mesh):
@@ -378,7 +381,9 @@ class RR_OT_DiagnosticsFixNgons(RecRoomDiagnosticOperator):
     def execute_(self, context):
         # Cache selection
         active = bpy.context.active_object
-        selected_meshes = [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        selected_meshes = [
+            o for o in bpy.data.objects if o.select_get() and o.type == 'MESH'
+        ]
 
         # Clear selection
         bpy.ops.object.select_all(action='DESELECT')
@@ -408,19 +413,17 @@ class RR_OT_DiagnosticsFixNgons(RecRoomDiagnosticOperator):
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsCheckTriangleCount(RecRoomDiagnosticOperator):
     """"""
+
     bl_idname = 'rr.diagnostics_check_triangle_count'
     bl_label = 'Check Triangle Count'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Over Triangle Count',
-        'icon': Icons.WARNING
-    }
+    label = {'text': 'Over Triangle Count', 'icon': Icons.WARNING}
 
     @classmethod
     def diagnose(cls, mesh):
@@ -455,19 +458,17 @@ class RR_OT_DiagnosticsCheckTriangleCount(RecRoomDiagnosticOperator):
         return False
 
     def execute(self, context):
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsCheckItemType(RecRoomDiagnosticOperator):
     """"""
+
     bl_idname = 'rr.diagnostics_check_item_type'
     bl_label = 'Check Item Type'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Incorrect Item Type for Body Type',
-        'icon': Icons.WARNING
-    }
+    label = {'text': 'Incorrect Item Type for Body Type', 'icon': Icons.WARNING}
 
     @classmethod
     def diagnose(cls, mesh):
@@ -478,16 +479,14 @@ class RR_OT_DiagnosticsCheckItemType(RecRoomDiagnosticOperator):
 
         cls.label['text'] = 'Incorrect Item Type for Body Type'
 
-        body_types = {
-            'MB': 'Modern Bean',
-            'FB': 'Full Body'
-        }
+        body_types = {'MB': 'Modern Bean', 'FB': 'Full Body'}
 
         if prefix == 'MB':
             if item_type in ('LEG', 'SHOE'):
-                cls.label['text'] = f'Item type {item_type.capitalize()} not valid for {body_types[prefix]}'
+                cls.label['text'] = (
+                    f'Item type {item_type.capitalize()} not valid for {body_types[prefix]}'
+                )
                 return True
-
 
         return False
 
@@ -496,19 +495,17 @@ class RR_OT_DiagnosticsCheckItemType(RecRoomDiagnosticOperator):
         return False
 
     def execute(self, context):
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsCheckBoneWeighting(RecRoomDiagnosticOperator):
     """"""
+
     bl_idname = 'rr.diagnostics_check_bone_weighting'
     bl_label = 'Check Bone Weighting'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Invalid Bone Found',
-        'icon': Icons.WARNING
-    }
+    label = {'text': 'Invalid Bone Found', 'icon': Icons.WARNING}
 
     @classmethod
     def diagnose(cls, mesh):
@@ -527,8 +524,14 @@ class RR_OT_DiagnosticsCheckBoneWeighting(RecRoomDiagnosticOperator):
             return False
 
         # Find vertex groups that have at least one vertex with non-zero weight
-        indices = {g.group for v in mesh.data.vertices for g in v.groups if g.weight > 0}
-        actual_bone_names = {mesh.vertex_groups[i].name for i in indices if mesh.vertex_groups[i].name.startswith('Jnt.')}
+        indices = {
+            g.group for v in mesh.data.vertices for g in v.groups if g.weight > 0
+        }
+        actual_bone_names = {
+            mesh.vertex_groups[i].name
+            for i in indices
+            if mesh.vertex_groups[i].name.startswith('Jnt.')
+        }
 
         unexpected_bones = list(actual_bone_names.difference(expected_bone_names))
 
@@ -542,20 +545,17 @@ class RR_OT_DiagnosticsCheckBoneWeighting(RecRoomDiagnosticOperator):
         return False
 
     def execute(self, context):
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 class RR_OT_DiagnosticsCheckBounds(RecRoomDiagnosticOperator):
     """"""
+
     bl_idname = 'rr.diagnostics_check_bounds'
     bl_label = 'Check Bounds'
-    bl_options = { 'REGISTER', 'UNDO' }
+    bl_options = {'REGISTER', 'UNDO'}
 
-    label = {
-        'text': 'Outside bounds',
-        'icon': Icons.WARNING
-    }
-
+    label = {'text': 'Outside bounds', 'icon': Icons.WARNING}
 
     def in_bounds(self, bound, location):
         m = bound.matrix_world.inverted()
@@ -616,7 +616,7 @@ class RR_OT_DiagnosticsCheckBounds(RecRoomDiagnosticOperator):
         return False
 
     def execute(self, context):
-        return { 'FINISHED' }
+        return {'FINISHED'}
 
 
 classes = (

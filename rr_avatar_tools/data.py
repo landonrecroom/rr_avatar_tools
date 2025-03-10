@@ -40,11 +40,17 @@ class Data(sys.__class__):
 
     @property
     def layer_collections(self):
-        return Collection(o for o in rr_avatar_tools.utils.layer_collections_recursive())
+        return Collection(
+            o for o in rr_avatar_tools.utils.layer_collections_recursive()
+        )
 
     @property
     def avatar_items(self):
-        return Collection(c for c in bpy.data.collections if not c.library and c.get('rec_room_uuid', False))
+        return Collection(
+            c
+            for c in bpy.data.collections
+            if not c.library and c.get('rec_room_uuid', False)
+        )
 
 
 sys.modules[__name__].__class__ = Data

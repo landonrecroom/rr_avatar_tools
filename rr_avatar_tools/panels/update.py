@@ -3,6 +3,7 @@ import bpy
 
 class SCENE_PT_RRAvatarToolsUpdatePanel(bpy.types.Panel):
     """Creates a panel in the object properties window."""
+
     bl_label = 'Modern Bean Update'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -11,7 +12,7 @@ class SCENE_PT_RRAvatarToolsUpdatePanel(bpy.types.Panel):
 
     @classmethod
     def poll(cls, context):
-        return False #bpy.context.preferences.addons['rr_avatar_tools'].preferences.show_all_operators
+        return False  # bpy.context.preferences.addons['rr_avatar_tools'].preferences.show_all_operators
 
     def draw(self, context):
         layout = self.layout
@@ -19,9 +20,7 @@ class SCENE_PT_RRAvatarToolsUpdatePanel(bpy.types.Panel):
         column = layout.column(align=True)
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsUpdatePanel,
-)
+classes = (SCENE_PT_RRAvatarToolsUpdatePanel,)
 
 
 def register():

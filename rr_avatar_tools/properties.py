@@ -13,7 +13,9 @@ class ExportGroupProperty(bpy.types.PropertyGroup):
     @classmethod
     def layer_collections(cls):
         def walk_view_layers(collection):
-            return sum([walk_view_layers(c) for c in collection.children], start=[collection])
+            return sum(
+                [walk_view_layers(c) for c in collection.children], start=[collection]
+            )
 
         return walk_view_layers(bpy.context.view_layer.layer_collection)
 
@@ -23,7 +25,11 @@ class ExportGroupProperty(bpy.types.PropertyGroup):
         return matches[0] if matches else None
 
     def collection(self):
-        collections = [c for c in rr_avatar_tools.data.collections if c.get('rec_room_uuid') == self.uuid]
+        collections = [
+            c
+            for c in rr_avatar_tools.data.collections
+            if c.get('rec_room_uuid') == self.uuid
+        ]
         return collections and collections[0] or None
 
     def layer_collection(self):
@@ -38,7 +44,20 @@ class ExportGroupProperty(bpy.types.PropertyGroup):
 
         t = collection.name.split('_')[-1].upper()
 
-        if t not in ('BELT', 'EAR', 'EYE', 'HAIR', 'HAT', 'MOUTH', 'NECK', 'WRIST', 'SHIRT', 'SHOULDER', 'LEG', 'SHOE'):
+        if t not in (
+            'BELT',
+            'EAR',
+            'EYE',
+            'HAIR',
+            'HAT',
+            'MOUTH',
+            'NECK',
+            'WRIST',
+            'SHIRT',
+            'SHOULDER',
+            'LEG',
+            'SHOE',
+        ):
             return 'UNKNOWN'
 
         return t

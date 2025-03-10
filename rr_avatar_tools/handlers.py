@@ -12,7 +12,11 @@ from rr_avatar_tools.bounds import bounding_boxes
 @bpy.app.handlers.persistent
 def fix_up_export_list(scene):
     avatar_item_collections: List[bpy.types.Collection]
-    avatar_item_collections = [c for c in rr_avatar_tools.data.collections if c.get('rec_room_uuid', False) or c.get('rec_room_avatar_item', False)]
+    avatar_item_collections = [
+        c
+        for c in rr_avatar_tools.data.collections
+        if c.get('rec_room_uuid', False) or c.get('rec_room_avatar_item', False)
+    ]
 
     for collection in avatar_item_collections:
         if collection.get('rec_room_avatar_item'):
@@ -50,7 +54,9 @@ def update_export_list(scene):
     export_list = scene.export_list
 
     avatar_item_collections: List[bpy.types.Collection]
-    avatar_item_collections = [i for i in rr_avatar_tools.data.avatar_items if not i.name.startswith('BB')]
+    avatar_item_collections = [
+        i for i in rr_avatar_tools.data.avatar_items if not i.name.startswith('BB')
+    ]
 
     # Check if the export list and child collections are still in sync
     if len(avatar_item_collections) == len(export_list):
@@ -60,7 +66,9 @@ def update_export_list(scene):
         data = zip(uuids, types, export_list)
 
         # Ensure uuids and types are in sync
-        if all(uuid_ == prop.uuid and type_ == prop.type() for uuid_, type_, prop in data):
+        if all(
+            uuid_ == prop.uuid and type_ == prop.type() for uuid_, type_, prop in data
+        ):
             return
 
     lookup = {prop.uuid: prop.select for prop in export_list}
@@ -130,7 +138,7 @@ def mask_vertex_groups():
 def update_mask_modifiers(scene):
     for _, group in enumerate(scene.mask_list):
         for body_mesh in body_meshes():
-            group:bpy.types.VertexGroup
+            group: bpy.types.VertexGroup
 
             mask_modifiers: List[bpy.types.MaskModifier]
             mask_modifiers = [m for m in body_mesh.modifiers if m.type == 'MASK']
@@ -150,7 +158,7 @@ def update_masks(scene):
     mask_list = scene.mask_list
     mask_groups = mask_vertex_groups()
 
-    lookup = {c.name:c.select for c in mask_list}
+    lookup = {c.name: c.select for c in mask_list}
 
     mask_list.clear()
 
@@ -227,14 +235,26 @@ def run_diagnostics(old, new):
     if bpy.context.active_object and bpy.context.active_object.mode == 'EDIT':
         return
 
-    collections = [c for c in rr_avatar_tools.data.collections if c.get('rec_room_uuid')]
+    collections = [
+        c for c in rr_avatar_tools.data.collections if c.get('rec_room_uuid')
+    ]
     for collection in collections:
         collection['has_errors'] = False
 
-        for mesh in [m for m in collection.objects if m.type == 'MESH' and '_LOD' in m.name]:
-            collection['has_errors'] |= any([op for op in rr_avatar_tools.operators.diagnostics.classes if op.diagnose(mesh)])
+        for mesh in [
+            m for m in collection.objects if m.type == 'MESH' and '_LOD' in m.name
+        ]:
+            collection['has_errors'] |= any(
+                [
+                    op
+                    for op in rr_avatar_tools.operators.diagnostics.classes
+                    if op.diagnose(mesh)
+                ]
+            )
+
 
 next_run_diagnostics = float('inf')
+
 
 @bpy.app.handlers.persistent
 def run_diagnostics_on_scene_update(scene):
@@ -245,6 +265,7 @@ def run_diagnostics_on_scene_update(scene):
 avatar_item_selection_handlers = [
     run_diagnostics,
 ]
+
 
 @bpy.app.handlers.persistent
 def check_for_avatar_item_selection_change(scene):
@@ -271,6 +292,7 @@ def check_for_next_diagnostic_run():
 
     return 0.5
 
+
 depsgraph_handlers = (
     update_export_list,
     update_mask_list,
@@ -285,9 +307,8 @@ load_post_handlers = (
     setup_bounds_list,
 )
 
-timers = (
-    check_for_next_diagnostic_run,
-)
+timers = (check_for_next_diagnostic_run,)
+
 
 def register():
     for handler in depsgraph_handlers:

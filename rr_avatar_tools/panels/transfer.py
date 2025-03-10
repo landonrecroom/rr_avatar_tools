@@ -13,16 +13,18 @@ class SCENE_PT_RRAvatarToolsTransferPanel(RecRoomOperatorPanel):
 
         column = layout.column(align=True)
         for operator in operators.weights.panel:
-            column.operator(operator.bl_idname, text=operator.rr_label or operator.bl_label)
+            column.operator(
+                operator.bl_idname, text=operator.rr_label or operator.bl_label
+            )
 
         column = layout.column(align=True)
         for operator in operators.transfer.panel:
-            column.operator(operator.bl_idname, text=operator.rr_label or operator.bl_label)
+            column.operator(
+                operator.bl_idname, text=operator.rr_label or operator.bl_label
+            )
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsTransferPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsTransferPanel,)
 
 
 def register():

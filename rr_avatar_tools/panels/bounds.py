@@ -9,14 +9,13 @@ class BoundingBoxProperty(bpy.types.PropertyGroup):
 
 
 class SCENE_UL_RRBoundsList(bpy.types.UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_property, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_property, index
+    ):
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
             row = layout.row()
 
-            row.label(
-                text=item.name,
-                icon='CUBE'
-            )
+            row.label(text=item.name, icon='CUBE')
 
             # Visibility
             row.prop(item, 'select', text='')
@@ -24,6 +23,7 @@ class SCENE_UL_RRBoundsList(bpy.types.UIList):
         elif self.layout_type == 'GRID':
             layout.alignment = 'CENTER'
             layout.label(text='')
+
 
 class SCENE_PT_RRBoundsPanel(RecRoomAvatarPanel):
     bl_label = 'Bounds'
@@ -51,7 +51,7 @@ class SCENE_PT_RRBoundsPanel(RecRoomAvatarPanel):
             'bounding_box_list',
             scene,
             'bounding_box_list_index',
-            rows=rows
+            rows=rows,
         )
 
 
@@ -67,13 +67,19 @@ def register():
         bpy.utils.register_class(class_)
 
     try:
-        bpy.types.Scene.bounding_box_list = bpy.props.CollectionProperty(type=BoundingBoxProperty)
+        bpy.types.Scene.bounding_box_list = bpy.props.CollectionProperty(
+            type=BoundingBoxProperty
+        )
 
     except ValueError:
         bpy.utils.register_class(BoundingBoxProperty)
-        bpy.types.Scene.bounding_box_list = bpy.props.CollectionProperty(type=BoundingBoxProperty)
+        bpy.types.Scene.bounding_box_list = bpy.props.CollectionProperty(
+            type=BoundingBoxProperty
+        )
 
-    bpy.types.Scene.bounding_box_list_index = bpy.props.IntProperty(name='Index for bounding box list', default=0)
+    bpy.types.Scene.bounding_box_list_index = bpy.props.IntProperty(
+        name='Index for bounding box list', default=0
+    )
 
 
 def unregister():

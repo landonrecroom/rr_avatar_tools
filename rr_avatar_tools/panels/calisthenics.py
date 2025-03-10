@@ -16,21 +16,17 @@ class SCENE_PT_RRAvatarToolsCalisthenicsPanel(RecRoomOperatorPanel):
         row.scale_y = 1.3
 
         row.operator(
-            'rr.calisthenics_set_active_action',
-            text='Full Body',
-            icon='ARMATURE_DATA'
+            'rr.calisthenics_set_active_action', text='Full Body', icon='ARMATURE_DATA'
         ).action = 'Calisthenics_FB'
 
         row.operator(
             'rr.calisthenics_set_active_action',
             text='Modern Bean',
-            icon='ARMATURE_DATA'
+            icon='ARMATURE_DATA',
         ).action = 'Calisthenics_MB'
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsCalisthenicsPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsCalisthenicsPanel,)
 
 
 def register():

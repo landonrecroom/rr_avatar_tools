@@ -15,9 +15,7 @@ class SCENE_PT_RRAvatarToolsExperimentalPanel(RecRoomOperatorPanel):
         column.operator('rr.update_remove_arms')
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsExperimentalPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsExperimentalPanel,)
 
 
 def register():

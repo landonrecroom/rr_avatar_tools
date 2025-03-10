@@ -5,6 +5,7 @@ from rr_avatar_tools.panels.base import RecRoomAvatarPanel
 
 class SCENE_PT_RRAvatarToolsBodyPanel(RecRoomAvatarPanel):
     """Avatar Body Panel"""
+
     bl_label = 'Avatar Body'
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -17,9 +18,7 @@ class SCENE_PT_RRAvatarToolsBodyPanel(RecRoomAvatarPanel):
         layout = self.layout
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsBodyPanel,
-)
+classes = (SCENE_PT_RRAvatarToolsBodyPanel,)
 
 
 def register():

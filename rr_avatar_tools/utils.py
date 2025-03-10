@@ -12,7 +12,7 @@ class CollectionState:
     hide_select: bool
     hide_viewport: bool
 
-    def __init__(self, collection:bpy.types.Collection):
+    def __init__(self, collection: bpy.types.Collection):
         self.collection = collection
         self.hide_render = collection.hide_render
         self.hide_select = collection.hide_select
@@ -39,7 +39,7 @@ class LayerCollectionState:
     layer_collection: bpy.types.LayerCollection
     hide_viewport: bool
 
-    def __init__(self, layer_collection:bpy.types.LayerCollection):
+    def __init__(self, layer_collection: bpy.types.LayerCollection):
         self.layer_collection = layer_collection
         self.hide_viewport = layer_collection.hide_viewport
 
@@ -99,7 +99,9 @@ def put_file_in_known_good_state(func):
         # Cache current state
         active = bpy.context.active_object
         collections = [CollectionState(c) for c in rr_avatar_tools.data.collections]
-        layer_collections = [LayerCollectionState(l) for l in rr_avatar_tools.data.layer_collections]
+        layer_collections = [
+            LayerCollectionState(l) for l in rr_avatar_tools.data.layer_collections
+        ]
         objects = [ObjectState(o) for o in bpy.data.objects]
 
         # Put in known good state
@@ -141,6 +143,8 @@ def layer_collections_recursive() -> List[bpy.types.LayerCollection]:
     """Returns a flattened sequence of LayerCollection objects"""
 
     def walk_view_layers(collection):
-        return sum([walk_view_layers(c) for c in collection.children], start=[collection])
+        return sum(
+            [walk_view_layers(c) for c in collection.children], start=[collection]
+        )
 
     return walk_view_layers(bpy.context.view_layer.layer_collection)

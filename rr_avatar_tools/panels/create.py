@@ -29,9 +29,7 @@ class SCENE_PT_RRAvatarToolsCreatePanel(RecRoomOperatorPanel):
         )
 
 
-classes = (
-    SCENE_PT_RRAvatarToolsCreatePanel,
-)
+classes = (SCENE_PT_RRAvatarToolsCreatePanel,)
 
 
 def register():
