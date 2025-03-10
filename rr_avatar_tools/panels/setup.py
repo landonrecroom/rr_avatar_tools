@@ -5,10 +5,10 @@ from rr_avatar_tools import operators
 
 
 class SCENE_PT_RRAvatarToolsSetupPanel(RecRoomAvatarPanel):
-    bl_label = 'Setup'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Rec Room Avatar Tools'
+    bl_label = "Setup"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Rec Room Avatar Tools"
 
     @classmethod
     def poll(cls, context):
@@ -23,7 +23,7 @@ class SCENE_PT_RRAvatarToolsSetupPanel(RecRoomAvatarPanel):
         # Ensure file is correctly set up
         operator = operators.setup.RR_OT_SetupSetupFile
 
-        column.operator(operator.bl_idname, text=operator.bl_label, icon='FILE_TICK')
+        column.operator(operator.bl_idname, text=operator.bl_label, icon="FILE_TICK")
 
 
 classes = (SCENE_PT_RRAvatarToolsSetupPanel,)

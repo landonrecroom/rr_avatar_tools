@@ -4,11 +4,11 @@ import bpy
 class SCENE_PT_RRAvatarToolsUpdatePanel(bpy.types.Panel):
     """Creates a panel in the object properties window."""
 
-    bl_label = 'Modern Bean Update'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Rec Room Avatar Tools'
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsToolsPanel'
+    bl_label = "Modern Bean Update"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Rec Room Avatar Tools"
+    bl_parent_id = "SCENE_PT_RRAvatarToolsToolsPanel"
 
     @classmethod
     def poll(cls, context):

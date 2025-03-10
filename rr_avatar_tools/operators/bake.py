@@ -10,14 +10,14 @@ from rr_avatar_tools.operators.base import RecRoomAvatarMeshOperator
 class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
     """Bake Culling Mask to UV Channels"""
 
-    bl_idname = 'rr.bake_culling_mask_to_uv_channels'
-    bl_label = 'Bake Culling Mask to UV Channels'
-    bl_options = {'REGISTER', 'UNDO'}
-    rr_required_mode = 'OBJECT'
+    bl_idname = "rr.bake_culling_mask_to_uv_channels"
+    bl_label = "Bake Culling Mask to UV Channels"
+    bl_options = {"REGISTER", "UNDO"}
+    rr_required_mode = "OBJECT"
 
     @classmethod
     def active_mesh(cls):
-        if bpy.context.active_object.type == 'MESH':
+        if bpy.context.active_object.type == "MESH":
             return bpy.context.active_object
 
         return None
@@ -28,7 +28,7 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
             return []
 
         vertex_groups = [
-            g for g in cls.active_mesh().vertex_groups if g.name.startswith('Msk.')
+            g for g in cls.active_mesh().vertex_groups if g.name.startswith("Msk.")
         ]
 
         return sorted(vertex_groups, key=lambda g: g.name)
@@ -55,10 +55,10 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
         weights = [vertex_map.get(g.index, 0) for g in mask_groups]
 
         # Convert weights to a sequence of '1' or '0's
-        chars = ['1' if w > 0.5 else '0' for w in weights]
+        chars = ["1" if w > 0.5 else "0" for w in weights]
 
         # Join into a single string
-        bit_string = ''.join(chars)
+        bit_string = "".join(chars)
 
         # Flip so least significant bit is rightmost
         flipped_bit_string = bit_string[::-1]
@@ -72,9 +72,9 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
         self, vertex: bpy.types.MeshVertex
     ) -> Tuple[mathutils.Vector, mathutils.Vector]:
         value = self.encode_vertex(vertex)
-        data = struct.pack('<q', value)
+        data = struct.pack("<q", value)
 
-        u0, v0, u1, v1 = struct.unpack('<HHHH', data)
+        u0, v0, u1, v1 = struct.unpack("<HHHH", data)
 
         uv0 = mathutils.Vector((u0 + 0.5, v0 + 0.5))
         uv1 = mathutils.Vector((u1 + 0.5, v1 + 0.5))
@@ -86,11 +86,11 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
         data: bpy.types.Mesh = selected.data
 
         uv_layer1 = data.uv_layers.get(
-            'BitPackedLayerMasks_UVLayer_1'
-        ) or data.uv_layers.new(name='BitPackedLayerMasks_UVLayer_1')
+            "BitPackedLayerMasks_UVLayer_1"
+        ) or data.uv_layers.new(name="BitPackedLayerMasks_UVLayer_1")
         uv_layer2 = data.uv_layers.get(
-            'BitPackedLayerMasks_UVLayer_2'
-        ) or data.uv_layers.new(name='BitPackedLayerMasks_UVLayer_2')
+            "BitPackedLayerMasks_UVLayer_2"
+        ) or data.uv_layers.new(name="BitPackedLayerMasks_UVLayer_2")
 
         for polygon in data.polygons:
             for loop_index in polygon.loop_indices:
@@ -100,7 +100,7 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
                 uv_layer1.data[loop_index].uv = uv1
                 uv_layer2.data[loop_index].uv = uv2
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 classes = (RR_OT_BakeCullingMaskToUVChannels,)

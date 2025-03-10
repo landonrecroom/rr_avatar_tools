@@ -28,7 +28,7 @@ class ExportGroupProperty(bpy.types.PropertyGroup):
         collections = [
             c
             for c in rr_avatar_tools.data.collections
-            if c.get('rec_room_uuid') == self.uuid
+            if c.get("rec_room_uuid") == self.uuid
         ]
         return collections and collections[0] or None
 
@@ -40,36 +40,36 @@ class ExportGroupProperty(bpy.types.PropertyGroup):
         collection = self.collection()
 
         if not collection:
-            return 'UNKNOWN'
+            return "UNKNOWN"
 
-        t = collection.name.split('_')[-1].upper()
+        t = collection.name.split("_")[-1].upper()
 
         if t not in (
-            'BELT',
-            'EAR',
-            'EYE',
-            'HAIR',
-            'HAT',
-            'MOUTH',
-            'NECK',
-            'WRIST',
-            'SHIRT',
-            'SHOULDER',
-            'LEG',
-            'SHOE',
+            "BELT",
+            "EAR",
+            "EYE",
+            "HAIR",
+            "HAT",
+            "MOUTH",
+            "NECK",
+            "WRIST",
+            "SHIRT",
+            "SHOULDER",
+            "LEG",
+            "SHOE",
         ):
-            return 'UNKNOWN'
+            return "UNKNOWN"
 
         return t
 
     def has_errors(self):
-        return bool(self.collection() and self.collection().get('has_errors'))
+        return bool(self.collection() and self.collection().get("has_errors"))
 
     def valid(self):
-        return self.type() != 'UNKNOWN' and not self.has_errors()
+        return self.type() != "UNKNOWN" and not self.has_errors()
 
     def can_export(self):
-        prefs = bpy.context.preferences.addons['rr_avatar_tools'].preferences
+        prefs = bpy.context.preferences.addons["rr_avatar_tools"].preferences
         if prefs.rec_room_internal:
             return True
 

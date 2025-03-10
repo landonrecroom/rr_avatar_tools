@@ -12,26 +12,26 @@ class SCENE_UL_RRBoundsList(bpy.types.UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_property, index
     ):
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+        if self.layout_type in {"DEFAULT", "COMPACT"}:
             row = layout.row()
 
-            row.label(text=item.name, icon='CUBE')
+            row.label(text=item.name, icon="CUBE")
 
             # Visibility
-            row.prop(item, 'select', text='')
+            row.prop(item, "select", text="")
 
-        elif self.layout_type == 'GRID':
-            layout.alignment = 'CENTER'
-            layout.label(text='')
+        elif self.layout_type == "GRID":
+            layout.alignment = "CENTER"
+            layout.label(text="")
 
 
 class SCENE_PT_RRBoundsPanel(RecRoomAvatarPanel):
-    bl_label = 'Bounds'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Rec Room Avatar Tools'
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsBodyPanel'
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_label = "Bounds"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Rec Room Avatar Tools"
+    bl_parent_id = "SCENE_PT_RRAvatarToolsBodyPanel"
+    bl_options = {"DEFAULT_CLOSED"}
 
     @classmethod
     def poll(cls, context):
@@ -45,12 +45,12 @@ class SCENE_PT_RRBoundsPanel(RecRoomAvatarPanel):
 
         rows = 3
         row.template_list(
-            'SCENE_UL_RRBoundsList',
-            'Bounding Box List',
+            "SCENE_UL_RRBoundsList",
+            "Bounding Box List",
             scene,
-            'bounding_box_list',
+            "bounding_box_list",
             scene,
-            'bounding_box_list_index',
+            "bounding_box_list_index",
             rows=rows,
         )
 
@@ -78,7 +78,7 @@ def register():
         )
 
     bpy.types.Scene.bounding_box_list_index = bpy.props.IntProperty(
-        name='Index for bounding box list', default=0
+        name="Index for bounding box list", default=0
     )
 
 

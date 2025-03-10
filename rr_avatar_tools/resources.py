@@ -5,13 +5,13 @@ from typing import Generator
 import bpy
 
 
-template_blend_file = str(Path(__file__).parent / 'resources' / 'template.blend')
+template_blend_file = str(Path(__file__).parent / "resources" / "template.blend")
 
-fb_library = str(Path(__file__).parent / 'resources' / 'fb_library.blend')
+fb_library = str(Path(__file__).parent / "resources" / "fb_library.blend")
 
-mb_library = str(Path(__file__).parent / 'resources' / 'mb_library.blend')
+mb_library = str(Path(__file__).parent / "resources" / "mb_library.blend")
 
-error_icon = str(Path(__file__).parent / 'resources' / 'icons' / 'error-yellow.png')
+error_icon = str(Path(__file__).parent / "resources" / "icons" / "error-yellow.png")
 
 
 class ResourceError(Exception):

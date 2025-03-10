@@ -5,8 +5,8 @@ from rr_avatar_tools import operators
 
 
 class SCENE_PT_RRAvatarToolsTransferPanel(RecRoomOperatorPanel):
-    bl_label = 'Transfer'
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsToolsPanel'
+    bl_label = "Transfer"
+    bl_parent_id = "SCENE_PT_RRAvatarToolsToolsPanel"
 
     def draw(self, context):
         layout = self.layout

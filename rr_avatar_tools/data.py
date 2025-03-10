@@ -49,7 +49,7 @@ class Data(sys.__class__):
         return Collection(
             c
             for c in bpy.data.collections
-            if not c.library and c.get('rec_room_uuid', False)
+            if not c.library and c.get("rec_room_uuid", False)
         )
 
 

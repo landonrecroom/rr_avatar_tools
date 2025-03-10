@@ -10,11 +10,11 @@ class RecRoomAvatarOperator(bpy.types.Operator):
     rr_require_rec_room_path = False
     rr_require_source_art_path = False
     rr_required_mode = None
-    rr_label = ''
+    rr_label = ""
 
     @classmethod
     def preferences(self) -> RRAvatarToolsPreferences:
-        return bpy.context.preferences.addons['rr_avatar_tools'].preferences
+        return bpy.context.preferences.addons["rr_avatar_tools"].preferences
 
     @classmethod
     def poll(cls, context):
@@ -37,4 +37,4 @@ class RecRoomAvatarMeshOperator(RecRoomAvatarOperator):
 
     @classmethod
     def selected_meshes(cls):
-        return [o for o in bpy.data.objects if o.select_get() and o.type == 'MESH']
+        return [o for o in bpy.data.objects if o.select_get() and o.type == "MESH"]

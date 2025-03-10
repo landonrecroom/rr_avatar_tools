@@ -14,7 +14,7 @@ class SCENE_UL_RROutfitList(bpy.types.UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_property, index
     ):
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+        if self.layout_type in {"DEFAULT", "COMPACT"}:
             if not (
                 layer_collection := rr_avatar_tools.data.layer_collections.get(
                     item.name
@@ -24,28 +24,28 @@ class SCENE_UL_RROutfitList(bpy.types.UIList):
 
             row = layout.row()
 
-            row.label(text=item.name, icon='MATCLOTH')
+            row.label(text=item.name, icon="MATCLOTH")
 
             # Visibility
             row.prop(
                 layer_collection,
-                'hide_viewport',
+                "hide_viewport",
                 icon_only=True,
                 emboss=False,
             )
 
-        elif self.layout_type == 'GRID':
-            layout.alignment = 'CENTER'
-            layout.label(text='')
+        elif self.layout_type == "GRID":
+            layout.alignment = "CENTER"
+            layout.label(text="")
 
 
 class SCENE_PT_RRAvatarOutfitPanel(RecRoomAvatarPanel):
-    bl_label = 'Outfits'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Rec Room Avatar Tools'
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsBodyPanel'
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_label = "Outfits"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Rec Room Avatar Tools"
+    bl_parent_id = "SCENE_PT_RRAvatarToolsBodyPanel"
+    bl_options = {"DEFAULT_CLOSED"}
 
     @classmethod
     def poll(cls, context):
@@ -58,18 +58,18 @@ class SCENE_PT_RRAvatarOutfitPanel(RecRoomAvatarPanel):
         row = layout.row()
 
         if bpy.ops.rr.setup_test_outfits.poll():
-            row.operator('rr.setup_test_outfits', text='Load Test Outfits')
+            row.operator("rr.setup_test_outfits", text="Load Test Outfits")
             row.scale_y = 2
             return
 
         rows = 3
         row.template_list(
-            'SCENE_UL_RROutfitList',
-            'Outfit List',
+            "SCENE_UL_RROutfitList",
+            "Outfit List",
             scene,
-            'outfit_list',
+            "outfit_list",
             scene,
-            'outfit_list_index',
+            "outfit_list_index",
             rows=rows,
         )
 
@@ -94,7 +94,7 @@ def register():
         bpy.types.Scene.outfit_list = bpy.props.CollectionProperty(type=OutfitProperty)
 
     bpy.types.Scene.outfit_list_index = bpy.props.IntProperty(
-        name='Index for outfit list', default=0
+        name="Index for outfit list", default=0
     )
 
 

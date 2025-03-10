@@ -7,7 +7,7 @@ from rr_avatar_tools.properties import MaskProperty
 
 
 def cleanup_name(name):
-    patt = r'Msk\.\d+\.(.*)'
+    patt = r"Msk\.\d+\.(.*)"
     matches = re.match(patt, name)
 
     if not matches:
@@ -20,29 +20,29 @@ class SCENE_UL_RRMaskList(bpy.types.UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_property, index
     ):
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+        if self.layout_type in {"DEFAULT", "COMPACT"}:
             row = layout.row()
 
             col = row.column()
             col.enabled = item.select
 
-            col.label(text=cleanup_name(item.name), icon='GROUP_VERTEX')
+            col.label(text=cleanup_name(item.name), icon="GROUP_VERTEX")
 
             col = row.column()
-            col.prop(item, 'select', text='')
+            col.prop(item, "select", text="")
 
-        elif self.layout_type == 'GRID':
-            layout.alignment = 'CENTER'
-            layout.label(text='')
+        elif self.layout_type == "GRID":
+            layout.alignment = "CENTER"
+            layout.label(text="")
 
 
 class SCENE_PT_RRAvatarMaskPanel(RecRoomAvatarPanel):
-    bl_label = 'Skin Culling'
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Rec Room Avatar Tools'
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsBodyPanel'
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_label = "Skin Culling"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Rec Room Avatar Tools"
+    bl_parent_id = "SCENE_PT_RRAvatarToolsBodyPanel"
+    bl_options = {"DEFAULT_CLOSED"}
 
     @classmethod
     def poll(cls, context):
@@ -56,12 +56,12 @@ class SCENE_PT_RRAvatarMaskPanel(RecRoomAvatarPanel):
 
         row = layout.row()
         row.template_list(
-            'SCENE_UL_RRMaskList',
-            'Mask List',
+            "SCENE_UL_RRMaskList",
+            "Mask List",
             scene,
-            'mask_list',
+            "mask_list",
             scene,
-            'mask_list_index',
+            "mask_list_index",
             rows=rows,
         )
 
@@ -85,7 +85,7 @@ def register():
         bpy.types.Scene.mask_list = bpy.props.CollectionProperty(type=MaskProperty)
 
     bpy.types.Scene.mask_list_index = bpy.props.IntProperty(
-        name='Index for mask list', default=0
+        name="Index for mask list", default=0
     )
 
 

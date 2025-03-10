@@ -10,12 +10,12 @@ from rr_avatar_tools.utils import put_file_in_known_good_state
 class RR_OT_SetupSetupFile(bpy.types.Operator):
     """Setup file for avatar work"""
 
-    bl_idname = 'rr.setup_setup_file'
-    bl_label = 'Setup File'
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_idname = "rr.setup_setup_file"
+    bl_label = "Setup File"
+    bl_options = {"REGISTER", "UNDO"}
 
     rr_require_source_art_path = True
-    rr_required_mode = 'OBJECT'
+    rr_required_mode = "OBJECT"
 
     suboperations = (
         bpy.ops.rr.setup_ensure_collections,
@@ -26,7 +26,7 @@ class RR_OT_SetupSetupFile(bpy.types.Operator):
 
     @classmethod
     def poll(cls, context):
-        if not context.scene.get('rec_room_setup'):
+        if not context.scene.get("rec_room_setup"):
             return True
 
         return any([op.poll() for op in cls.suboperations])
@@ -40,28 +40,28 @@ class RR_OT_SetupSetupFile(bpy.types.Operator):
 
             operation()
 
-        context.scene['rec_room_setup'] = True
+        context.scene["rec_room_setup"] = True
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_SetupEnsureCollections(bpy.types.Operator):
     """Create avatar collections"""
 
-    bl_idname = 'rr.setup_ensure_collections'
-    bl_label = 'Create Avatar Collections'
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_idname = "rr.setup_ensure_collections"
+    bl_label = "Create Avatar Collections"
+    bl_options = {"REGISTER", "UNDO"}
 
     @classmethod
     def preferences(self) -> RRAvatarToolsPreferences:
-        return bpy.context.preferences.addons['rr_avatar_tools'].preferences
+        return bpy.context.preferences.addons["rr_avatar_tools"].preferences
 
     @classmethod
     def poll(cls, context):
-        if not bpy.data.collections.get('Modern_Bean_Body'):
+        if not bpy.data.collections.get("Modern_Bean_Body"):
             return True
 
-        if not bpy.data.collections.get('Full_Body'):
+        if not bpy.data.collections.get("Full_Body"):
             return True
 
         return False
@@ -76,16 +76,16 @@ class RR_OT_SetupEnsureCollections(bpy.types.Operator):
         return result
 
     def execute(self, context):
-        self.find_or_create_collection('Full_Body')
-        self.find_or_create_collection('Modern_Bean_Body')
+        self.find_or_create_collection("Full_Body")
+        self.find_or_create_collection("Modern_Bean_Body")
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_SetupEnsureLinkedLibraries(bpy.types.Operator):
     bl_idname = "rr.setup_ensure_linked_libraries"
     bl_label = "Fix deprecated or missing Rec Room libraries"
-    bl_options = {'REGISTER', 'INTERNAL'}
+    bl_options = {"REGISTER", "INTERNAL"}
 
     @classmethod
     def poll(cls, context):
@@ -103,7 +103,7 @@ class RR_OT_SetupEnsureLinkedLibraries(bpy.types.Operator):
         if bpy.ops.rr.cleanup_fix_broken_libraries.poll():
             bpy.ops.rr.cleanup_fix_broken_libraries()
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
     def invoke(self, context, event):
         return context.window_manager.invoke_confirm(self, event)
@@ -112,24 +112,24 @@ class RR_OT_SetupEnsureLinkedLibraries(bpy.types.Operator):
 class RR_OT_SetupImportFullBodyMeshes(RecRoomAvatarOperator):
     """Imports full body meshes"""
 
-    bl_idname = 'rr.setup_import_full_body_meshes'
-    bl_label = 'Import Full_Body Avatar Meshes'
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_idname = "rr.setup_import_full_body_meshes"
+    bl_label = "Import Full_Body Avatar Meshes"
+    bl_options = {"REGISTER", "UNDO"}
 
     @classmethod
     def poll(cls, context):
-        collection = bpy.data.collections.get('FB_Resources')
+        collection = bpy.data.collections.get("FB_Resources")
         if not collection:
             return True
 
-        if not bpy.data.actions.get('Calisthenics_MB'):
+        if not bpy.data.actions.get("Calisthenics_MB"):
             return True
 
-        avatar_meshes = bpy.data.objects.get('Avatar_Meshes')
+        avatar_meshes = bpy.data.objects.get("Avatar_Meshes")
         if not avatar_meshes:
             return True
 
-        skeleton = bpy.data.objects.get('Avatar_Skeleton')
+        skeleton = bpy.data.objects.get("Avatar_Skeleton")
         if not skeleton:
             return True
 
@@ -150,9 +150,9 @@ class RR_OT_SetupImportFullBodyMeshes(RecRoomAvatarOperator):
         return matches[0] if matches else None
 
     def execute(self, context):
-        has_collection = bool(bpy.data.collections.get('FB_Resources'))
-        has_FB_action = 'Calisthenics_FB' in bpy.data.actions
-        has_MB_action = 'Calisthenics_MB' in bpy.data.actions
+        has_collection = bool(bpy.data.collections.get("FB_Resources"))
+        has_FB_action = "Calisthenics_FB" in bpy.data.actions
+        has_MB_action = "Calisthenics_MB" in bpy.data.actions
 
         # Add missing resources
         with bpy.data.libraries.load(
@@ -160,16 +160,16 @@ class RR_OT_SetupImportFullBodyMeshes(RecRoomAvatarOperator):
         ) as (data_from, data_to):
             if not has_collection:
                 data_to.collections = [
-                    c for c in data_from.collections if c == 'FB_Resources'
+                    c for c in data_from.collections if c == "FB_Resources"
                 ]
 
             data_to.actions = []
 
             if not has_FB_action:
-                data_to.actions.append('Calisthenics_FB')
+                data_to.actions.append("Calisthenics_FB")
 
             if not has_MB_action:
-                data_to.actions.append('Calisthenics_MB')
+                data_to.actions.append("Calisthenics_MB")
 
         # Configure timeline to see the entire calisthenics animations
         bpy.context.scene.frame_current = 0
@@ -180,35 +180,35 @@ class RR_OT_SetupImportFullBodyMeshes(RecRoomAvatarOperator):
         # Make library override
         if not has_collection:
             bpy.context.view_layer.active_layer_collection = self.get_view_layer(
-                'Full_Body'
+                "Full_Body"
             )
 
-            bpy.ops.object.collection_instance_add(name='FB_Resources')
+            bpy.ops.object.collection_instance_add(name="FB_Resources")
 
-            bpy.ops.object.select_all(action='DESELECT')
+            bpy.ops.object.select_all(action="DESELECT")
 
             # Find LayerCollection
-            skin_meshes = bpy.data.objects['FB_Resources']
+            skin_meshes = bpy.data.objects["FB_Resources"]
             skin_meshes.select_set(True)
 
             if bpy.ops.object.make_override_library.poll():
                 bpy.ops.object.make_override_library()
 
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_SetupImportModernBeanBodyMeshes(RecRoomAvatarOperator):
     """Imports modern bean body meshes"""
 
-    bl_idname = 'rr.setup_import_modern_bean_body_meshes'
-    bl_label = 'Import Modern Bean Body Avatar Meshes'
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_idname = "rr.setup_import_modern_bean_body_meshes"
+    bl_label = "Import Modern Bean Body Avatar Meshes"
+    bl_options = {"REGISTER", "UNDO"}
 
     @classmethod
     def poll(cls, context):
-        collection = bpy.data.collections.get('MB_Resources')
+        collection = bpy.data.collections.get("MB_Resources")
         if not collection:
             return True
 
@@ -234,40 +234,40 @@ class RR_OT_SetupImportModernBeanBodyMeshes(RecRoomAvatarOperator):
             resources.mb_library, link=True, relative=True
         ) as (data_from, data_to):
             data_to.collections = [
-                c for c in data_from.collections if c == 'MB_Resources'
+                c for c in data_from.collections if c == "MB_Resources"
             ]
 
         bpy.context.view_layer.active_layer_collection = self.get_view_layer(
-            'Modern_Bean_Body'
+            "Modern_Bean_Body"
         )
 
-        bpy.ops.object.collection_instance_add(name='MB_Resources')
+        bpy.ops.object.collection_instance_add(name="MB_Resources")
 
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         # Find LayerCollection
-        skin_meshes = bpy.data.objects['MB_Resources']
+        skin_meshes = bpy.data.objects["MB_Resources"]
         skin_meshes.select_set(True)
 
         bpy.ops.object.make_override_library()
 
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         # Ensure armature modifers are correctly configured
-        col = bpy.data.collections['MB_Resources']
+        col = bpy.data.collections["MB_Resources"]
         for obj in col.objects:
-            for modifier in [m for m in obj.modifiers if m.type == 'ARMATURE']:
-                modifier.object = bpy.data.objects.get('Avatar_Skeleton')
+            for modifier in [m for m in obj.modifiers if m.type == "ARMATURE"]:
+                modifier.object = bpy.data.objects.get("Avatar_Skeleton")
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_SetupEnsureObjectsInGoodState(bpy.types.Operator):
     """Setup file for avatar work"""
 
-    bl_idname = 'rr.setup_ensure_objects_in_good_state'
-    bl_label = 'Ensure Objects are in a good state'
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_idname = "rr.setup_ensure_objects_in_good_state"
+    bl_label = "Ensure Objects are in a good state"
+    bl_options = {"REGISTER", "UNDO"}
 
     @classmethod
     def poll(cls, context):
@@ -297,21 +297,21 @@ class RR_OT_SetupEnsureObjectsInGoodState(bpy.types.Operator):
 
         bpy.context.view_layer.objects.active = cached
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_SetupTestOutfits(bpy.types.Operator):
     bl_idname = "rr.setup_test_outfits"
     bl_label = "Link in test outfits"
-    bl_options = {'REGISTER', 'INTERNAL'}
+    bl_options = {"REGISTER", "INTERNAL"}
 
     @classmethod
     def poll(cls, context):
-        parent = bpy.data.collections.get('Full_Body')
+        parent = bpy.data.collections.get("Full_Body")
         if not parent:
             return False
 
-        return 'FB_TestOutfits' not in {c.name for c in parent.children}
+        return "FB_TestOutfits" not in {c.name for c in parent.children}
 
     def execute(self, context):
         return self.execute_(context)
@@ -322,28 +322,28 @@ class RR_OT_SetupTestOutfits(bpy.types.Operator):
         outfit_list.clear()
 
         # Full body test outfits
-        collection = rr_avatar_tools.data.layer_collections.get('Full_Body')
+        collection = rr_avatar_tools.data.layer_collections.get("Full_Body")
         bpy.context.view_layer.active_layer_collection = collection
 
         with bpy.data.libraries.load(
             resources.fb_library, link=True, relative=True
         ) as (data_from, data_to):
             data_to.collections = [
-                c for c in data_from.collections if c == 'FB_TestOutfits'
+                c for c in data_from.collections if c == "FB_TestOutfits"
             ]
 
-        bpy.ops.object.collection_instance_add(name='FB_TestOutfits')
+        bpy.ops.object.collection_instance_add(name="FB_TestOutfits")
 
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         # Find LayerCollection
-        t = bpy.data.objects['FB_TestOutfits']
+        t = bpy.data.objects["FB_TestOutfits"]
         t.select_set(True)
 
         if bpy.ops.object.make_override_library.poll():
             bpy.ops.object.make_override_library()
 
-        c = bpy.data.collections.get('FB_TestOutfits')
+        c = bpy.data.collections.get("FB_TestOutfits")
 
         test_outfits = []
 
@@ -355,32 +355,32 @@ class RR_OT_SetupTestOutfits(bpy.types.Operator):
             rr_avatar_tools.data.layer_collections[child.name].hide_viewport = True
 
             for o in child.objects:
-                mod = o.modifiers.get('Armature')
-                mod.object = bpy.data.objects.get('Avatar_Skeleton')
+                mod = o.modifiers.get("Armature")
+                mod.object = bpy.data.objects.get("Avatar_Skeleton")
 
         # Modern bean test outfits
-        collection = rr_avatar_tools.data.layer_collections.get('Modern_Bean_Body')
+        collection = rr_avatar_tools.data.layer_collections.get("Modern_Bean_Body")
         bpy.context.view_layer.active_layer_collection = collection
 
         with bpy.data.libraries.load(
             resources.mb_library, link=True, relative=True
         ) as (data_from, data_to):
             data_to.collections = [
-                c for c in data_from.collections if c == 'MB_TestOutfits'
+                c for c in data_from.collections if c == "MB_TestOutfits"
             ]
 
-        bpy.ops.object.collection_instance_add(name='MB_TestOutfits')
+        bpy.ops.object.collection_instance_add(name="MB_TestOutfits")
 
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         # Find LayerCollection
-        t = bpy.data.objects['MB_TestOutfits']
+        t = bpy.data.objects["MB_TestOutfits"]
         t.select_set(True)
 
         if bpy.ops.object.make_override_library.poll():
             bpy.ops.object.make_override_library()
 
-        c = bpy.data.collections.get('MB_TestOutfits')
+        c = bpy.data.collections.get("MB_TestOutfits")
 
         for child in c.children:
             test_outfits.append(child.name)
@@ -390,8 +390,8 @@ class RR_OT_SetupTestOutfits(bpy.types.Operator):
             rr_avatar_tools.data.layer_collections[child.name].hide_viewport = True
 
             for o in child.objects:
-                mod = o.modifiers.get('Armature')
-                mod.object = bpy.data.objects.get('Avatar_Skeleton')
+                mod = o.modifiers.get("Armature")
+                mod.object = bpy.data.objects.get("Avatar_Skeleton")
 
         for outfit in sorted(test_outfits):
             c = bpy.data.collections[outfit]
@@ -399,7 +399,7 @@ class RR_OT_SetupTestOutfits(bpy.types.Operator):
             outfit_list[-1].name = outfit
             outfit_list[-1].select = False
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 classes = (

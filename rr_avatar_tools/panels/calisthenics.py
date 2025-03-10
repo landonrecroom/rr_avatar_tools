@@ -5,9 +5,9 @@ from rr_avatar_tools import operators
 
 
 class SCENE_PT_RRAvatarToolsCalisthenicsPanel(RecRoomOperatorPanel):
-    bl_label = 'Calisthenics'
+    bl_label = "Calisthenics"
     rr_operators = operators.cleanup.panel
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsBodyPanel'
+    bl_parent_id = "SCENE_PT_RRAvatarToolsBodyPanel"
 
     def draw(self, context):
         layout = self.layout
@@ -16,14 +16,14 @@ class SCENE_PT_RRAvatarToolsCalisthenicsPanel(RecRoomOperatorPanel):
         row.scale_y = 1.3
 
         row.operator(
-            'rr.calisthenics_set_active_action', text='Full Body', icon='ARMATURE_DATA'
-        ).action = 'Calisthenics_FB'
+            "rr.calisthenics_set_active_action", text="Full Body", icon="ARMATURE_DATA"
+        ).action = "Calisthenics_FB"
 
         row.operator(
-            'rr.calisthenics_set_active_action',
-            text='Modern Bean',
-            icon='ARMATURE_DATA',
-        ).action = 'Calisthenics_MB'
+            "rr.calisthenics_set_active_action",
+            text="Modern Bean",
+            icon="ARMATURE_DATA",
+        ).action = "Calisthenics_MB"
 
 
 classes = (SCENE_PT_RRAvatarToolsCalisthenicsPanel,)

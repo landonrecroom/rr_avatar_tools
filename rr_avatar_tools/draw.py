@@ -30,9 +30,9 @@ wire_indices = (
     (3, 7),
 )
 
-wire_shader = gpu.shader.from_builtin('POLYLINE_UNIFORM_COLOR')
+wire_shader = gpu.shader.from_builtin("POLYLINE_UNIFORM_COLOR")
 wire_batch = batch_for_shader(
-    wire_shader, 'LINES', {"pos": coords}, indices=wire_indices
+    wire_shader, "LINES", {"pos": coords}, indices=wire_indices
 )
 
 cube_indices = (
@@ -50,9 +50,9 @@ cube_indices = (
     (6, 5, 7),  # +Z face
 )
 
-cube_shader = gpu.shader.from_builtin('UNIFORM_COLOR')
+cube_shader = gpu.shader.from_builtin("UNIFORM_COLOR")
 cube_batch = batch_for_shader(
-    cube_shader, 'TRIS', {'pos': coords}, indices=cube_indices
+    cube_shader, "TRIS", {"pos": coords}, indices=cube_indices
 )
 
 
@@ -61,14 +61,14 @@ def draw():
     vm = bpy.context.region_data.perspective_matrix
     bounding_box_list = bpy.context.scene.bounding_box_list
 
-    show_both_wrists = [b for b in bounding_box_list if b.name == 'WRIST.BOTH'][
+    show_both_wrists = [b for b in bounding_box_list if b.name == "WRIST.BOTH"][
         0
     ].select
 
     for bb in bounding_box_list:
         visible = bb.select
 
-        if bb.name.startswith('WRIST'):
+        if bb.name.startswith("WRIST"):
             visible |= show_both_wrists
 
         if not visible:
@@ -89,16 +89,16 @@ def draw():
         cube_shader.uniform_float("ModelViewProjectionMatrix", m)
         cube_shader.uniform_float("color", (0, 0, 0, 0.25))
 
-        gpu.state.blend_set('ALPHA')
-        gpu.state.face_culling_set('BACK')
+        gpu.state.blend_set("ALPHA")
+        gpu.state.face_culling_set("BACK")
         cube_batch.draw(cube_shader)
-        gpu.state.face_culling_set('NONE')
-        gpu.state.blend_set('NONE')
+        gpu.state.face_culling_set("NONE")
+        gpu.state.blend_set("NONE")
 
 
 def register():
-    bpy.types.SpaceView3D.draw_handler_add(draw, (), 'WINDOW', 'POST_VIEW')
+    bpy.types.SpaceView3D.draw_handler_add(draw, (), "WINDOW", "POST_VIEW")
 
 
 def unregister():
-    bpy.types.SpaceView3D.draw_handler_remove(draw, 'WINDOW')
+    bpy.types.SpaceView3D.draw_handler_remove(draw, "WINDOW")

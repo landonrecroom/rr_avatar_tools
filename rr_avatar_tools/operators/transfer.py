@@ -14,16 +14,16 @@ from rr_avatar_tools.operators.base import RecRoomAvatarMeshOperator
 class RR_OT_TransferUVs(RecRoomAvatarMeshOperator):
     """UVs from active to selected"""
 
-    bl_idname = 'rr.transfer_uvs_from_active_mesh'
-    bl_label = 'UVs From Active Mesh'
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_idname = "rr.transfer_uvs_from_active_mesh"
+    bl_label = "UVs From Active Mesh"
+    bl_options = {"REGISTER", "UNDO"}
 
     @classmethod
     def poll(cls, context):
         active = bpy.context.view_layer.objects.active
         selection = [o for o in cls.selected_meshes() if o != active]
 
-        return super().poll(context) and active and active.type == 'MESH' and selection
+        return super().poll(context) and active and active.type == "MESH" and selection
 
     def execute(self, context):
         # Cache selection
@@ -31,11 +31,11 @@ class RR_OT_TransferUVs(RecRoomAvatarMeshOperator):
         selected_meshes = [
             o
             for o in bpy.data.objects
-            if o.select_get() and o.type == 'MESH' and o != active
+            if o.select_get() and o.type == "MESH" and o != active
         ]
 
         # Clear selection
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         for selected in selected_meshes:
             selected.select_set(True)
@@ -44,27 +44,27 @@ class RR_OT_TransferUVs(RecRoomAvatarMeshOperator):
             active.select_set(True)
             bpy.context.view_layer.objects.active = active
 
-            bpy.ops.object.data_transfer(data_type='UV')
+            bpy.ops.object.data_transfer(data_type="UV")
 
             selected.select_set(False)
 
         # Restore selection
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
         bpy.context.view_layer.objects.active = active
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
     """Mirror mesh geometry but keep UV layout"""
 
-    bl_idname = 'rr.transfer_make_symmetric_keep_uvs'
-    bl_label = 'Mirror Mesh Keep UVs'
-    bl_options = {'REGISTER', 'UNDO'}
+    bl_idname = "rr.transfer_make_symmetric_keep_uvs"
+    bl_label = "Mirror Mesh Keep UVs"
+    bl_options = {"REGISTER", "UNDO"}
 
-    flip: BoolProperty(name='Flip', default=False)
+    flip: BoolProperty(name="Flip", default=False)
 
     def execute(self, context):
         # Cache selection
@@ -72,7 +72,7 @@ class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
         selected_meshes = self.selected_meshes()
 
         # Clear selection
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         for selected in selected_meshes:
             selected.select_set(True)
@@ -83,7 +83,7 @@ class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
             duplicate.select_set(False)
 
             # Mirror original with bisect + clipping
-            modifier: MirrorModifier = selected.modifiers.new('Mirror', 'MIRROR')
+            modifier: MirrorModifier = selected.modifiers.new("Mirror", "MIRROR")
             modifier.use_bisect_axis[0] = True
             modifier.use_clip = True
             modifier.use_bisect_flip_axis[0] = self.flip
@@ -96,7 +96,7 @@ class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
             bpy.context.view_layer.objects.active = duplicate
             selected.select_set(True)
 
-            bpy.ops.object.data_transfer(data_type='UV')
+            bpy.ops.object.data_transfer(data_type="UV")
 
             selected.select_set(False)
 
@@ -104,12 +104,12 @@ class RR_OT_TransferMakeSymmetricKeepUVs(RecRoomAvatarMeshOperator):
             bpy.ops.object.delete()
 
         # Restore selection
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
         bpy.context.view_layer.objects.active = active
         for selected in selected_meshes:
             selected.select_set(True)
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 classes = (
@@ -129,9 +129,9 @@ def update_label(cls, scene):
     active = bpy.context.view_layer.objects.active
 
     if not active:
-        RR_OT_TransferUVs.bl_label = f'Transfer UVs'
+        RR_OT_TransferUVs.bl_label = f"Transfer UVs"
     else:
-        RR_OT_TransferUVs.bl_label = f'UVs from {active.name}'
+        RR_OT_TransferUVs.bl_label = f"UVs from {active.name}"
 
 
 def register():

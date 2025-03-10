@@ -9,9 +9,9 @@ class RecRoomAvatarPanel(bpy.types.Panel):
 
 
 class RecRoomOperatorPanel(RecRoomAvatarPanel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = 'Rec Room Avatar Tools'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "Rec Room Avatar Tools"
 
     rr_operators = []
 

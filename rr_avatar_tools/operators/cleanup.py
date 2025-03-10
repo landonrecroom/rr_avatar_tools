@@ -15,9 +15,9 @@ from rr_avatar_tools.utils import put_file_in_known_good_state
 class RR_OT_CleanupScorchFile(RecRoomAvatarOperator):
     """Delete all non-avatar item objects in the scene"""
 
-    bl_idname = 'rr.cleanup_scorch_file'
-    bl_label = 'Scorch File'
-    bl_options = {'REGISTER'}
+    bl_idname = "rr.cleanup_scorch_file"
+    bl_label = "Scorch File"
+    bl_options = {"REGISTER"}
 
     @classmethod
     def poll(cls, context):
@@ -28,7 +28,7 @@ class RR_OT_CleanupScorchFile(RecRoomAvatarOperator):
 
     @put_file_in_known_good_state
     def execute_(self, context):
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         # Remove all linked libraries
         while bpy.data.libraries:
@@ -47,31 +47,31 @@ class RR_OT_CleanupScorchFile(RecRoomAvatarOperator):
         for mesh in [
             o
             for o in bpy.data.objects
-            if o.type == 'MESH' and o.name.upper().startswith('BB_')
+            if o.type == "MESH" and o.name.upper().startswith("BB_")
         ]:
             mesh.select_set(True)
             bpy.context.view_layer.objects.active = mesh
 
-            bpy.ops.object.parent_clear(type='CLEAR_KEEP_TRANSFORM')
+            bpy.ops.object.parent_clear(type="CLEAR_KEEP_TRANSFORM")
             mesh.parent = None
 
             mesh.select_set(False)
             bpy.context.view_layer.objects.active = None
 
         # Remove base objects
-        remove_object_and_children('GeoGroup')
-        remove_object_and_children('HandGroup')
-        remove_object_and_children('Avatar_Meshes')
-        remove_object_and_children('Avatar_Skeleton')
+        remove_object_and_children("GeoGroup")
+        remove_object_and_children("HandGroup")
+        remove_object_and_children("Avatar_Meshes")
+        remove_object_and_children("Avatar_Skeleton")
 
         # Remove all non-mesh objects
         for o in bpy.data.objects[:]:
-            if o.type == 'MESH' and (o.name.upper()[:3] in ('FB_', 'MB_', 'BB_')):
+            if o.type == "MESH" and (o.name.upper()[:3] in ("FB_", "MB_", "BB_")):
                 o.hide_set(False)
 
                 o.select_set(True)
                 bpy.context.view_layer.objects.active = o
-                bpy.ops.object.mode_set(mode='OBJECT')
+                bpy.ops.object.mode_set(mode="OBJECT")
                 bpy.context.view_layer.objects.active = None
                 o.select_set(False)
 
@@ -89,28 +89,28 @@ class RR_OT_CleanupScorchFile(RecRoomAvatarOperator):
         # Clean data
         bpy.ops.outliner.orphans_purge(do_recursive=True)
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_CleanupRecreateAvatarItems(RecRoomAvatarOperator):
     """Recreate Avatar Items"""
 
-    bl_idname = 'rr.cleanup_recreate_avatar_items'
-    bl_label = 'Recreate Avatar Items'
-    bl_options = {'REGISTER'}
+    bl_idname = "rr.cleanup_recreate_avatar_items"
+    bl_label = "Recreate Avatar Items"
+    bl_options = {"REGISTER"}
 
     @classmethod
     def poll(cls, context):
         return True
 
     def execute(self, context):
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         def filter(ob):
-            if ob.type != 'MESH':
+            if ob.type != "MESH":
                 return False
 
-            resource_collections = {'MB_Resources', 'FB_Resources'}
+            resource_collections = {"MB_Resources", "FB_Resources"}
             object_collections = [c.name for c in ob.users_collection]
 
             if resource_collections.intersection(object_collections):
@@ -118,58 +118,58 @@ class RR_OT_CleanupRecreateAvatarItems(RecRoomAvatarOperator):
 
             n = ob.name[:3].upper()
 
-            return n in ('FB_', 'MB_')
+            return n in ("FB_", "MB_")
 
         for m in [o for o in bpy.data.objects if filter(o)]:
             m.select_set(True)
             bpy.context.view_layer.objects.active = m
 
             bpy.ops.rr.create_avatar_item()
-            bpy.ops.object.select_all(action='DESELECT')
+            bpy.ops.object.select_all(action="DESELECT")
 
             bpy.context.view_layer.objects.active = None
             m.select_set(False)
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_CleanupPutOrphanedObjectInLegacyCollection(RecRoomAvatarOperator):
     """Put orphan objects in legacy collection"""
 
-    bl_idname = 'rr.cleanup_put_orphan_objects_in_legacy_collection'
-    bl_label = 'Put Orphan Objects in Legacy Collection'
-    bl_options = {'REGISTER'}
+    bl_idname = "rr.cleanup_put_orphan_objects_in_legacy_collection"
+    bl_label = "Put Orphan Objects in Legacy Collection"
+    bl_options = {"REGISTER"}
 
     @classmethod
     def poll(cls, context):
         return True
 
     def execute(self, context):
-        bpy.ops.object.select_all(action='DESELECT')
+        bpy.ops.object.select_all(action="DESELECT")
 
         scene_collection = bpy.context.scene.collection
 
-        legacy_collection = bpy.data.collections.get('Legacy_Items')
+        legacy_collection = bpy.data.collections.get("Legacy_Items")
         if not legacy_collection:
-            legacy_collection = bpy.data.collections.new('Legacy_Items')
+            legacy_collection = bpy.data.collections.new("Legacy_Items")
             scene_collection.children.link(legacy_collection)
 
-        for m in [o for o in bpy.context.scene.collection.objects if o.type == 'MESH']:
+        for m in [o for o in bpy.context.scene.collection.objects if o.type == "MESH"]:
             legacy_collection.objects.link(m)
             scene_collection.objects.unlink(m)
 
-        lc = rr_avatar_tools.data.layer_collections.get('Legacy_Items')
+        lc = rr_avatar_tools.data.layer_collections.get("Legacy_Items")
         lc.hide_viewport = True
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_CleanupRebuildFile(RecRoomAvatarOperator):
     """Delete all non-avatar item objects, setup file, and recreate all avatar items"""
 
-    bl_idname = 'rr.cleanup_rebuild_files'
-    bl_label = 'Rebuild File'
-    bl_options = {'REGISTER'}
+    bl_idname = "rr.cleanup_rebuild_files"
+    bl_label = "Rebuild File"
+    bl_options = {"REGISTER"}
 
     @classmethod
     def poll(cls, context):
@@ -181,15 +181,15 @@ class RR_OT_CleanupRebuildFile(RecRoomAvatarOperator):
         bpy.ops.rr.cleanup_recreate_avatar_items()
         bpy.ops.rr.cleanup_put_orphan_objects_in_legacy_collection()
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_CleanupFixBrokenLibraries(RecRoomAvatarOperator):
     """Fix Broken Libraries"""
 
-    bl_idname = 'rr.cleanup_fix_broken_libraries'
-    bl_label = 'Fix Broken Libraries'
-    bl_options = {'REGISTER'}
+    bl_idname = "rr.cleanup_fix_broken_libraries"
+    bl_label = "Fix Broken Libraries"
+    bl_options = {"REGISTER"}
 
     @classmethod
     def libraries(cls):
@@ -214,28 +214,28 @@ class RR_OT_CleanupFixBrokenLibraries(RecRoomAvatarOperator):
 
     def execute(self, context):
         broken = self.broken_libraries()
-        directory = str(Path(__file__).parent.parent / 'resources')
+        directory = str(Path(__file__).parent.parent / "resources")
         bpy.ops.file.find_missing_files(directory=directory)
 
         # Reload all our libraries
         for library in broken:
             library.reload()
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 class RR_OT_CleanupRemoveDeprecatedLibraries(RecRoomAvatarOperator):
     """Remove deprecated  Libraries"""
 
-    bl_idname = 'rr.cleanup_remove_deprecated_libraries'
-    bl_label = 'Remove Deprecated Libraries'
-    bl_options = {'REGISTER'}
+    bl_idname = "rr.cleanup_remove_deprecated_libraries"
+    bl_label = "Remove Deprecated Libraries"
+    bl_options = {"REGISTER"}
 
     @classmethod
     def broken_libraries(cls):
         library_files = (
-            'Avatar_Rig.blend',
-            'FB_Avatar_Skin.blend',
+            "Avatar_Rig.blend",
+            "FB_Avatar_Skin.blend",
         )
 
         return [
@@ -255,7 +255,7 @@ class RR_OT_CleanupRemoveDeprecatedLibraries(RecRoomAvatarOperator):
         for library in broken:
             bpy.data.libraries.remove(library)
 
-        return {'FINISHED'}
+        return {"FINISHED"}
 
 
 classes = (

@@ -4,15 +4,15 @@ from rr_avatar_tools.panels.base import RecRoomOperatorPanel
 
 
 class SCENE_PT_RRAvatarToolsExperimentalPanel(RecRoomOperatorPanel):
-    bl_label = 'Experimental'
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsToolsPanel'
+    bl_label = "Experimental"
+    bl_parent_id = "SCENE_PT_RRAvatarToolsToolsPanel"
 
     def draw(self, context):
         layout = self.layout
 
         column = layout.column()
-        column.operator('rr.create_modern_bean_from_full_body')
-        column.operator('rr.update_remove_arms')
+        column.operator("rr.create_modern_bean_from_full_body")
+        column.operator("rr.update_remove_arms")
 
 
 classes = (SCENE_PT_RRAvatarToolsExperimentalPanel,)

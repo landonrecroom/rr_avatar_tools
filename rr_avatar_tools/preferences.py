@@ -7,21 +7,21 @@ from bpy.props import (
 
 
 class RRAvatarToolsPreferences(bpy.types.AddonPreferences):
-    bl_idname = 'rr_avatar_tools'
+    bl_idname = "rr_avatar_tools"
 
     show_all_operators: BoolProperty(
-        name='Show Debug Panel',
+        name="Show Debug Panel",
         default=False,
-        description='Show the Debug Panel in the 3D view',
+        description="Show the Debug Panel in the 3D view",
     )
 
-    rec_room_internal: BoolProperty(name='Use Rec Room Internal Options', default=False)
+    rec_room_internal: BoolProperty(name="Use Rec Room Internal Options", default=False)
 
     generic_export_path: StringProperty(
-        name='Export Path',
-        default='',
-        description='Define the path to the export folder',
-        subtype='DIR_PATH',
+        name="Export Path",
+        default="",
+        description="Define the path to the export folder",
+        subtype="DIR_PATH",
     )
 
     def draw(self, context):
@@ -30,17 +30,17 @@ class RRAvatarToolsPreferences(bpy.types.AddonPreferences):
         row = layout.row()
         split = row.split(factor=0.3)
         col = split.column()
-        col.label(text='Rec Room Internal')
+        col.label(text="Rec Room Internal")
         col = split.column()
-        col.prop(self, 'rec_room_internal', text='')
+        col.prop(self, "rec_room_internal", text="")
 
         if self.rec_room_internal:
             row = layout.row()
             split = row.split(factor=0.3)
             col = split.column()
-            col.label(text='Developer Extras')
+            col.label(text="Developer Extras")
             col = split.column()
-            col.prop(self, 'show_all_operators', text='')
+            col.prop(self, "show_all_operators", text="")
 
 
 all = (RRAvatarToolsPreferences,)

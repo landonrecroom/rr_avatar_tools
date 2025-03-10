@@ -1,22 +1,22 @@
 bl_info = {
-    'name': 'Rec Room Avatar Tools',
-    'author': 'Joshua Skelton',
-    'version': (0, 11, 0),
-    'blender': (3, 6, 5),
-    'location': '',
-    'description': '',
-    'warning': '',
-    'wiki_url': '',
-    'doc_url': 'https://rec.net/blender-addon-docs',
-    'support': 'COMMUNITY',
-    'category': 'Scene',
+    "name": "Rec Room Avatar Tools",
+    "author": "Joshua Skelton",
+    "version": (0, 11, 0),
+    "blender": (3, 6, 5),
+    "location": "",
+    "description": "",
+    "warning": "",
+    "wiki_url": "",
+    "doc_url": "https://rec.net/blender-addon-docs",
+    "support": "COMMUNITY",
+    "category": "Scene",
 }
 
-__version__ = '.'.join(map(str, bl_info['version']))
+__version__ = ".".join(map(str, bl_info["version"]))
 
 
 # Handle Reload Scripts
-if 'reload' in locals():
+if "reload" in locals():
     import importlib as il
 
     il.reload(reload)
@@ -73,5 +73,5 @@ def unregister():
             print(e)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     register()

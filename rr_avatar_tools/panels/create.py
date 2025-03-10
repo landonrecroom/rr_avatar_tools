@@ -5,11 +5,11 @@ from rr_avatar_tools import operators
 
 
 class SCENE_PT_RRAvatarToolsCreatePanel(RecRoomOperatorPanel):
-    bl_label = 'Create'
+    bl_label = "Create"
     rr_operators = operators.create.panel
 
     def draw_header(self, context):
-        self.layout.label(text='', icon='PLUS')
+        self.layout.label(text="", icon="PLUS")
 
     def draw(self, context):
         layout = self.layout
@@ -17,15 +17,15 @@ class SCENE_PT_RRAvatarToolsCreatePanel(RecRoomOperatorPanel):
         row = layout.row()
         row.scale_y = 1.3
         row.operator(
-            'rr.create_avatar_item',
-            text='Create Avatar Item',
-            icon='COLLECTION_NEW',
+            "rr.create_avatar_item",
+            text="Create Avatar Item",
+            icon="COLLECTION_NEW",
         )
 
         layout.operator(
-            'rr.create_left_side_avatar_item',
-            text='Create Left Side Item',
-            icon='MOD_MIRROR',
+            "rr.create_left_side_avatar_item",
+            text="Create Left Side Item",
+            icon="MOD_MIRROR",
         )
 
 

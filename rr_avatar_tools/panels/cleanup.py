@@ -5,24 +5,24 @@ from rr_avatar_tools import operators
 
 
 class SCENE_PT_RRAvatarToolsCleanupPanel(RecRoomOperatorPanel):
-    bl_label = 'File Cleanup'
+    bl_label = "File Cleanup"
     rr_operators = operators.cleanup.panel
-    bl_parent_id = 'SCENE_PT_RRAvatarToolsToolsPanel'
+    bl_parent_id = "SCENE_PT_RRAvatarToolsToolsPanel"
 
     def draw(self, context):
         layout = self.layout
 
         col = layout.column()
         col.operator(
-            'rr.cleanup_rebuild_files',
-            text='Rebuild File',
-            icon='MOD_BUILD',
+            "rr.cleanup_rebuild_files",
+            text="Rebuild File",
+            icon="MOD_BUILD",
         )
 
         col.operator(
-            'rr.cleanup_scorch_file',
-            text='Scorch File',
-            icon='SEQ_HISTOGRAM',
+            "rr.cleanup_scorch_file",
+            text="Scorch File",
+            icon="SEQ_HISTOGRAM",
         )
 
 
