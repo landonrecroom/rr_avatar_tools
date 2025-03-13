@@ -123,7 +123,11 @@ def put_file_in_known_good_state(func):
         bpy.context.scene.frame_set(frame)
 
         # Restore previous state
-        bpy.context.view_layer.objects.active = active
+        try:
+            bpy.context.view_layer.objects.active = active
+        except ReferenceError:
+            # Ignore if the active object has been removed
+            pass
 
         for c in collections:
             c.restore()
