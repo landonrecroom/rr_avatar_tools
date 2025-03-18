@@ -259,6 +259,13 @@ class RR_OT_SetupImportModernBeanBodyMeshes(RecRoomAvatarOperator):
             for modifier in [m for m in obj.modifiers if m.type == "ARMATURE"]:
                 modifier.object = bpy.data.objects.get("Avatar_Skeleton")
 
+        # Link Avatar Skeleton into the Modern_Bean_Body collection
+        col = bpy.data.collections["Modern_Bean_Body"]
+        avatar_skeleton = bpy.data.objects["Avatar_Skeleton"]
+        avatar_skeleton.select_set(True)
+        index = bpy.data.collections[:].index(col)
+        bpy.ops.object.link_to_collection(collection_index=index)
+
         return {"FINISHED"}
 
 
