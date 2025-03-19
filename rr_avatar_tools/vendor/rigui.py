@@ -79,20 +79,11 @@ def draw_bc_armature_config(context, layout, armature_data):
 class RIG_UI_PT_Universal(bpy.types.Panel):
     """Panel for Rig UI"""
 
-    bl_label = ""
+    bl_label = "Rig"
     bl_idname = "RIG_UI_PT_Universal"
     bl_parent_id = "SCENE_PT_RRAvatarToolsToolsPanel"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-
-    def draw_header(self, context):
-        layout = self.layout
-        layout.label(text="Rig")
-        options = layout.row(align=True)
-        options.active = False
-        options.operator(
-            "rig_ui.armature_configure", text="", icon="PREFERENCES", emboss=False
-        )
 
     def draw(self, context):
         layout = self.layout
