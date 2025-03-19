@@ -44,6 +44,9 @@ def all():
     il.reload(rr_avatar_tools.panels.transfer)
     il.reload(rr_avatar_tools.panels.update)
 
+    il.reload(rr_avatar_tools.vendor)
+    il.reload(rr_avatar_tools.vendor.rigui)
+
     # Reload handlers subpackage
     il.reload(rr_avatar_tools.handlers)
 

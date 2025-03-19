@@ -32,6 +32,7 @@ def register():
     from rr_avatar_tools import panels
     from rr_avatar_tools import preferences
     from rr_avatar_tools import properties
+    from rr_avatar_tools import vendor
 
     modules = (
         properties,
@@ -40,6 +41,7 @@ def register():
         panels,
         draw,
         handlers,
+        vendor,
     )
 
     for module in modules:
@@ -56,6 +58,7 @@ def unregister():
     from rr_avatar_tools import panels
     from rr_avatar_tools import preferences
     from rr_avatar_tools import properties
+    from rr_avatar_tools import vendor
 
     modules = (
         properties,
@@ -64,6 +67,7 @@ def unregister():
         panels,
         draw,
         handlers,
+        vendor,
     )
 
     for module in modules:
