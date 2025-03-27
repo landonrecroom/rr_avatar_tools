@@ -181,7 +181,8 @@ class RR_OT_CreateAvatarItem(RecRoomAvatarMeshOperator):
 
                 mesh.name = f"{prefix}_{mesh.name[i:]}"
 
-            if not mesh.name[-5:-1] == "_LOD":
+            # Ensure we have LOD part
+            if not mesh.name.split("_")[-1].startswith("LOD"):
                 mesh.name = f"{mesh.name}_LOD0"
 
 
