@@ -96,6 +96,11 @@ def put_file_in_known_good_state(func):
     """Put file in a known good state and restore state after function call."""
 
     def wrapper(*args, **kwargs):
+        # Ensure object mode
+        mode = bpy.context.object.mode if bpy.context.object else None
+        if mode:
+            bpy.ops.object.mode_set(mode="OBJECT")
+
         # Cache current state
         active = bpy.context.active_object
         collections = [CollectionState(c) for c in rr_avatar_tools.data.collections]
@@ -137,6 +142,10 @@ def put_file_in_known_good_state(func):
 
         for o in objects:
             o.restore()
+
+        # Restore previous mode
+        if mode:
+            bpy.ops.object.mode_set(mode=mode)
 
         return result
 
