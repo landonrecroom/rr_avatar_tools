@@ -17,7 +17,7 @@ class RR_OT_BakeCullingMaskToUVChannels(RecRoomAvatarMeshOperator):
 
     @classmethod
     def active_mesh(cls):
-        if bpy.context.active_object.type == "MESH":
+        if bpy.context.active_object and bpy.context.active_object.type == "MESH":
             return bpy.context.active_object
 
         return None
