@@ -1,8 +1,10 @@
 import os
+from typing import Set
 
 import bpy
 
 import rr_avatar_tools
+import rr_avatar_tools.data
 from rr_avatar_tools.operators.base import RecRoomAvatarOperator
 from rr_avatar_tools.utils import put_file_in_known_good_state
 
@@ -117,6 +119,9 @@ class RR_OT_ExportGenericFullBodyAvatarItems(RecRoomAvatarOperator):
                 self, context, filepath=filepath, **settings.full_body_export_fbx
             )
 
+            if self.preferences().copy_images_on_export:
+                bpy.ops.rr.export_avatar_item_textures(target=collection.name)
+
         return {"FINISHED"}
 
 
@@ -186,6 +191,9 @@ class RR_OT_ExportGenericModernBeanAvatarItems(RecRoomAvatarOperator):
             export_fbx_bin.save(
                 self, context, filepath=filepath, **settings.full_body_export_fbx
             )
+
+            if self.preferences().copy_images_on_export:
+                bpy.ops.rr.export_avatar_item_textures(target=collection.name)
 
         return {"FINISHED"}
 
@@ -342,6 +350,54 @@ class RR_OT_ExportToggleAvatarItemVisibilityByLOD(RecRoomAvatarOperator):
         return {"FINISHED"}
 
 
+class RR_OT_ExportAvatarItemTextures(RecRoomAvatarOperator):
+    """Delete Avatar Item"""
+
+    bl_idname = "rr.export_avatar_item_textures"
+    bl_label = "Export Avatar Item Textures"
+    bl_options = {"REGISTER", "UNDO"}
+
+    rr_require_rec_room_path = False
+    rr_required_mode = "OBJECT"
+
+    target: bpy.props.StringProperty()
+
+    @classmethod
+    def poll(cls, context):
+        return True
+
+    def get_images(self, mesh: bpy.types.Mesh):
+        images = set()
+
+        material: bpy.types.Material
+        for material in mesh.materials:
+            i = [n.image for n in material.node_tree.nodes if n.type == "TEX_IMAGE"]
+            images = images.union(i)
+
+        return images
+
+    def execute(self, context):
+        collection = rr_avatar_tools.data.avatar_items.get(self.target)
+
+        if not collection:
+            return {"CANCELLED"}
+
+        images: Set[bpy.types.Image] = set()
+        for mesh in [o for o in collection.objects if o.type == "MESH"]:
+            i = self.get_images(mesh.data)
+            images = images.union(i)
+
+        for image in images:
+            name = os.path.basename(image.filepath) or f"{image.name}.png"
+            base = self.preferences().generic_export_path
+            filepath = os.path.join(base, name)
+            image.save(filepath=filepath)
+
+        print(f"Saved {len(images)} images.")
+
+        return {"FINISHED"}
+
+
 classes = (
     RR_OT_ExportGenericAvatarItems,
     RR_OT_ExportGenericFullBodyAvatarItems,
@@ -349,6 +405,7 @@ classes = (
     RR_OT_ExportSelectAvatarItemMeshes,
     RR_OT_ExportDeleteAvatarItem,
     RR_OT_ExportToggleAvatarItemVisibilityByLOD,
+    RR_OT_ExportAvatarItemTextures,
 )
 
 

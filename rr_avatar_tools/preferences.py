@@ -24,8 +24,19 @@ class RRAvatarToolsPreferences(bpy.types.AddonPreferences):
         subtype="DIR_PATH",
     )
 
+    copy_images_on_export: BoolProperty(
+        name="Copy images used in avatar item when exporting", default=False
+    )
+
     def draw(self, context):
         layout = self.layout
+
+        row = layout.row()
+        split = row.split(factor=0.3)
+        col = split.column()
+        col.label(text="Copy Images on Export")
+        col = split.column()
+        col.prop(self, "copy_images_on_export", text="")
 
         row = layout.row()
         split = row.split(factor=0.3)
