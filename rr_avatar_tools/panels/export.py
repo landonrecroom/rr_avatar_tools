@@ -194,8 +194,9 @@ class SCENE_PT_RRAvatarToolsExportPanel(RecRoomAvatarPanel):
         row.scale_y = 2
 
         row.operator("rr.export_generic_avatar_items", text="Export Avatar Items")
-        row = layout.row()
+        row = layout.row(align=True)
         row.prop(prefs, "generic_export_path", text="Path")
+        row.prop(prefs, "copy_images_on_export", icon="IMAGE_DATA", text="")
 
 
 classes = (
