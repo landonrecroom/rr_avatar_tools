@@ -1,6 +1,6 @@
 # rr_avatar_tools
 
-[![Blender 3.6.0](https://img.shields.io/badge/blender-3.6.0-%23f4792b.svg)]() [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)]()
+[![Blender 4.2.0](https://img.shields.io/badge/blender-4.2.0-%23f4792b.svg)]() [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)]()
 
 
 
