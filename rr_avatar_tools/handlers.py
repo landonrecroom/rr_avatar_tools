@@ -123,10 +123,26 @@ def body_meshes() -> List[bpy.types.Object]:
     return meshes
 
 
+_deprecated_groups = (
+    "Msk.05.SleevesShort",
+    "Msk.06.SleevesLong",
+    "Msk.09.PantsLong",
+    "Msk.11.FootMid",
+    "Msk.12.FootLow",
+    "Msk.13.PantsShort",
+    "Msk.18.Ears",
+    "Msk.19.FootHigh",
+)
+
+
 def mask_vertex_groups():
     name_sets = []
     for mesh in body_meshes():
-        vg = {g.name for g in mesh.vertex_groups if g.name.startswith("Msk.")}
+        vg = {
+            g.name
+            for g in mesh.vertex_groups
+            if g.name.startswith("Msk.") and g.name not in _deprecated_groups
+        }
         name_sets.append(vg)
 
     if not name_sets:
@@ -162,7 +178,7 @@ def update_masks(scene):
 
     mask_list.clear()
 
-    for i, name in enumerate(mask_groups):
+    for i, name in enumerate(m for m in mask_groups):
         # Add to mask list
         mask_list.add()
         mask_list[i].name = name
