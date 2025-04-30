@@ -1,4 +1,4 @@
-# [![vgio](https://raw.githubusercontent.com/RecRoomGame/rr_avatar_tools/master/.media/cover.png?sanitize=true)](https://github.com/RecRoomGame/rr_avatar_tools)
+# [![rec room avatar tools](https://raw.githubusercontent.com/RecRoomGame/rr_avatar_tools/master/.media/cover.png?sanitize=true)](https://github.com/RecRoomGame/rr_avatar_tools)
 
 # Rec Room Avatar Tools
 
