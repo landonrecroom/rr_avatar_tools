@@ -7,7 +7,7 @@
 
 
 ## Installation
-1. Download [latest version]() of rr_avatar_tools.
+1. Download [latest release](https://github.com/RecRoomGame/rr_avatar_tools/releases/latest) of rr_avatar_tools.
 2. From Blender: Edit > Preferences
 3. Select the 'Add-ons tab' and click 'Install' in the upper right.
 4. Navigate to the zip file and click 'Install Add-on from File'
