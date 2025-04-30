@@ -1,4 +1,6 @@
-# rr_avatar_tools
+# [![vgio](https://raw.githubusercontent.com/RecRoomGame/rr_avatar_tools/master/.media/cover.png?sanitize=true)](https://github.com/RecRoomGame/rr_avatar_tools)
+
+# Rec Room Avatar Tools
 
 [![Blender 4.2.0](https://img.shields.io/badge/blender-4.2.0-%23f4792b.svg)]() [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)]()
 
