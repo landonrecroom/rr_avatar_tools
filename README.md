@@ -2,25 +2,21 @@
 
 # Rec Room Avatar Tools
 
-[![Blender 4.2.0](https://img.shields.io/badge/blender-4.2.0-%23f4792b.svg)]() [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)]()
-
-
+[![Blender 4.2.0](https://img.shields.io/badge/blender-4.2_LTS-%23f4792b.svg)](https://www.blender.org/download/lts/4-2/) [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
 
 ## Installation
-1. Download [latest release](https://github.com/RecRoomGame/rr_avatar_tools/releases/latest) of rr_avatar_tools.
+1. Download rr_avatar_tools zip file from [latest release](https://github.com/RecRoomGame/rr_avatar_tools/releases/latest) of rr_avatar_tools.
 2. From Blender: Edit > Preferences
 3. Select the 'Add-ons tab' and click 'Install' in the upper right.
 4. Navigate to the zip file and click 'Install Add-on from File'
+5. Rec Room Avatars Tools can be found in the properties pane of the 3D viewport.
 
-## Contributing
-Have a bug fix or a new feature you'd like to see? Send it on over! Please make sure you create an issue that addresses your fix/feature so we can discuss the contribution.
-
-1. Fork this repo!
-2. Create your feature branch: `git checkout -b features/fix-bug`
-3. Commit your changes: `git commit -m 'Fixes the following...'`
-4. Push the branch: `git push origin features/fix-bug`
-5. Submit a pull request.
-6. Create an [issue]().
+## Features
+1. Operator to set up correct avatar item object heirarchy.
+2. Reference avatar mesh to ensure correct item scale and find clipping issues.
+3. Easy one-click FBX export to ensure mesh settings are correct for implementation in Rec Room.
+4. Validation sub panel to catch and fix common mistakes.
+5. Range of motion preview to catch rigging issues.
 
 ## License
 MIT
