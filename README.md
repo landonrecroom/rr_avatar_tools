@@ -4,6 +4,8 @@
 
 [![Blender 4.2.0](https://img.shields.io/badge/blender-4.2_LTS-%23f4792b.svg)](https://www.blender.org/download/lts/4-2/) [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/) [![Documentation](https://img.shields.io/badge/documentation-green)](https://rec.net/blender-addon-docs)
 
+Check out the full documentation and tutorials here: [Documentation Hub](https://rec.net/blender-addon-docs)
+
 ## Installation
 1. Download rr_avatar_tools zip file from [latest release](https://github.com/RecRoomGame/rr_avatar_tools/releases/latest) of rr_avatar_tools.
 2. From Blender: Edit > Preferences
