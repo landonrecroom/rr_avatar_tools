@@ -1,4 +1,5 @@
 """Packages the addon and dependency"""
+
 import importlib
 import os
 import re
@@ -8,17 +9,12 @@ from pathlib import Path
 
 import rr_avatar_tools
 
-ignored_directories = (
-    '__pycache__',
-    '.DS_Store'
-)
+ignored_directories = ("__pycache__", ".DS_Store")
 
-ignored_extensions = (
-    '.blend1',
-)
+ignored_extensions = (".blend1",)
 
 
-def gather_files(basedir, arc_prefix=''):
+def gather_files(basedir, arc_prefix=""):
     """Walk the given directory and return a sequence of filepath, archive name
     pairs.
 
@@ -57,10 +53,10 @@ def get_required_modules():
     Returns:
         A sequence of module names
     """
-    with open('requirements.txt') as file:
+    with open("requirements.txt") as file:
         data = file.read()
-        modules = data.split('\n')
-        pattern = '([A-Za-z0-9]+)(?:[<=>]+.*\n)?'
+        modules = data.split("\n")
+        pattern = "([A-Za-z0-9]+)(?:[<=>]+.*\n)?"
 
         def get_module_name(s):
             result = re.search(pattern, s)
@@ -75,23 +71,26 @@ def get_required_modules():
 
 def run():
     try:
-        os.mkdir('dist')
+        os.mkdir("dist")
 
     except FileExistsError:
         pass
 
-    zip_entries = gather_files('rr_avatar_tools')
+    zip_entries = gather_files("rr_avatar_tools")
+    zip_entries.append(("LICENSE", "rr_avatar_tools/LICENSE"))
 
     for module in get_required_modules():
         module = importlib.import_module(module)
-        zip_entries += gather_files(os.path.dirname(module.__file__), os.path.join('rr_avatar_tools', 'modules'))
+        zip_entries += gather_files(
+            os.path.dirname(module.__file__), os.path.join("rr_avatar_tools", "modules")
+        )
 
-    filename = f'rr_avatar_tools-{rr_avatar_tools.__version__}.zip'
-    filepath = os.path.abspath(os.path.join('dist', filename))
-    with zipfile.ZipFile(filepath, 'w') as dist_zip:
+    filename = f"rr_avatar_tools-{rr_avatar_tools.__version__}.zip"
+    filepath = os.path.abspath(os.path.join("dist", filename))
+    with zipfile.ZipFile(filepath, "w") as dist_zip:
         for filename, arcname in zip_entries:
             dist_zip.write(filename, arcname)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
