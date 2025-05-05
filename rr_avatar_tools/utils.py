@@ -97,7 +97,7 @@ def put_file_in_known_good_state(func):
 
     def wrapper(*args, **kwargs):
         # Ensure object mode
-        mode = bpy.context.object.mode if bpy.context.object else None
+        mode = bpy.context.object.mode if bpy.context.active_object else None
         if mode:
             bpy.ops.object.mode_set(mode="OBJECT")
 
